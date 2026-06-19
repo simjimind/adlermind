@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADLER MIND 협동조합 정관 검토</title>
+<title>ADLER MIND 협동조합 설립신고 서류 검토</title>
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ko_KR">
-<meta property="og:title" content="ADLER MIND 협동조합 정관">
-<meta property="og:description" content="발기인분들께서는 정관을 검토해주십시오.">
+<meta property="og:title" content="ADLER MIND 협동조합 설립신고 서류 검토">
+<meta property="og:description" content="발기인분들께서는 설립서류를 검토하고 의견을 남겨주십시오.">
 <meta property="og:image" content="https://simjimind.github.io/adlermind/image/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://simjimind.github.io/adlermind/adlermind_charter_review.html">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="ADLER MIND 협동조합 정관">
-<meta name="twitter:description" content="발기인분들께서는 정관을 검토해주십시오.">
+<meta name="twitter:title" content="ADLER MIND 협동조합 설립신고 서류 검토">
+<meta name="twitter:description" content="발기인분들께서는 설립서류를 검토하고 의견을 남겨주십시오.">
 <meta name="twitter:image" content="https://simjimind.github.io/adlermind/image/og-image.png">
 <style>
   :root {
@@ -319,6 +319,12 @@
   .legal-note .ln-mod { margin-top: 8px; background: rgba(212,160,23,0.1); border-left: 3px solid #d4a017; padding: 6px 10px; border-radius: 0 6px 6px 0; font-size: 12px; }
   .legal-note .ln-ref { margin-top: 8px; padding-top: 6px; border-top: 1px dashed var(--border); font-size: 11px; color: var(--muted); }
   .legal-note p { margin-bottom: 4px; }
+  .legal-note .ln-title { cursor: pointer; user-select: none; display: flex; align-items: center; justify-content: space-between; }
+  .legal-note .ln-title:hover { color: var(--green); }
+  .legal-note .ln-chevron { font-size: 12px; color: var(--green-light); transition: transform 0.2s; margin-left: 8px; flex-shrink: 0; }
+  .legal-note.open .ln-chevron { transform: rotate(180deg); }
+  .legal-note .ln-body { display: none; margin-top: 8px; }
+  .legal-note.open .ln-body { display: block; }
 
   /* 대댓글 */
   .reply-list { margin: 8px 0 0 28px; display: flex; flex-direction: column; gap: 6px; border-left: 2px solid var(--border); padding-left: 12px; }
@@ -347,12 +353,201 @@
     font-size: 13px; opacity: 0; transition: opacity 0.3s; z-index: 999;
   }
   .toast.show { opacity: 1; }
+
+  /* ===== 탭 네비게이션 ===== */
+  .tab-nav {
+    position: sticky; top: 48px; z-index: 90;
+    background: white; border-bottom: 2px solid var(--border);
+    display: flex; overflow-x: auto; padding: 0 16px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    -webkit-overflow-scrolling: touch;
+  }
+  .tab-nav::-webkit-scrollbar { height: 3px; }
+  .tab-nav::-webkit-scrollbar-thumb { background: var(--border); }
+  .tab-btn {
+    padding: 11px 14px; border: none; background: none;
+    font-size: 12px; color: var(--muted); cursor: pointer;
+    white-space: nowrap; border-bottom: 2.5px solid transparent;
+    margin-bottom: -2px; transition: all 0.15s; font-family: inherit; font-weight: 500;
+  }
+  .tab-btn:hover { color: var(--green); background: var(--cream); }
+  .tab-btn.active { color: var(--green); border-bottom-color: var(--green); font-weight: bold; }
+  .tab-btn.has-comment::after {
+    content: '';
+    display: inline-block;
+    width: 6px; height: 6px;
+    background: #c0796a;
+    border-radius: 50%;
+    margin-left: 5px;
+    vertical-align: middle;
+    position: relative; top: -1px;
+  }
+  .tab-pane { display: none; }
+  .tab-pane.active { display: block; }
+
+  /* ===== 서류 탭 공통 ===== */
+  .doc-hero {
+    background: linear-gradient(135deg, #555272 0%, #42405e 100%);
+    color: white; padding: 26px 24px 18px; text-align: center;
+  }
+  .doc-hero h2 { font-size: 18px; letter-spacing: 0.04em; margin-bottom: 5px; font-family: 'Noto Serif KR', Georgia, serif; }
+  .doc-hero .doc-subtitle { font-size: 11px; opacity: 0.72; margin-bottom: 8px; }
+  .doc-hero .doc-meta { display: flex; justify-content: center; gap: 16px; font-size: 11px; opacity: 0.62; flex-wrap: wrap; }
+
+  /* 상태 배지 */
+  .need-check {
+    display: inline-block; background: #fff8e1;
+    border: 1px dashed #f59e0b; padding: 1px 7px; border-radius: 4px;
+    font-size: 11px; color: #78350f; font-weight: bold;
+  }
+  .secure {
+    display: inline-block; background: #fef2f2;
+    border: 1px dashed #ef4444; padding: 1px 7px; border-radius: 4px;
+    font-size: 11px; color: #7f1d1d; font-weight: bold;
+  }
+  .confirmed-val {
+    display: inline-block; background: #f0fdf4;
+    border: 1px dashed #22c55e; padding: 1px 7px; border-radius: 4px;
+    font-size: 11px; color: #14532d; font-weight: bold;
+  }
+
+  /* 공식 서식 테이블 */
+  .official-form { width: 100%; border-collapse: collapse; font-size: 13px; margin: 6px 0; }
+  .official-form th, .official-form td { padding: 7px 10px; border: 1px solid #aaa; vertical-align: middle; text-align: left; line-height: 1.5; }
+  .official-form th { background: var(--green-pale); color: var(--green); font-weight: bold; white-space: nowrap; width: 30%; }
+  .official-form td.form-section-header { background: #555272; color: white; font-weight: bold; text-align: center; padding: 6px 10px; }
+  .official-form td.form-sub-header { background: var(--cream); font-weight: bold; color: var(--text); }
+  .official-form td.td-num { width: 40px; text-align: center; color: var(--muted); font-size: 12px; }
+
+  /* 서류 안내 */
+  .doc-guide {
+    max-width: 780px; margin: 14px auto 0; padding: 11px 16px;
+    background: var(--blue-pale); border-left: 4px solid #4a9fd4;
+    border-radius: 0 8px 8px 0; font-size: 12.5px; color: #2c5f8a;
+  }
+  .doc-guide b { display: block; margin-bottom: 4px; font-size: 13px; }
+
+  /* 의사록 */
+  .minutes-body { font-size: 13px; line-height: 1.85; color: var(--text); }
+  .minutes-item { margin: 6px 0 6px 12px; padding-left: 12px; border-left: 2px solid var(--border); }
+
+  /* 취임승낙서 */
+  .accept-card { background: var(--cream); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; margin: 12px 0; }
+  .accept-card h4 { font-size: 14px; color: var(--green); text-align: center; margin-bottom: 14px; }
+  .accept-tbl { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .accept-tbl td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .accept-tbl td:first-child { color: var(--muted); width: 35%; }
+  .accept-sign { text-align: right; margin-top: 16px; font-size: 13px; padding-top: 10px; border-top: 1px solid var(--muted); }
+
+  /* 개인정보동의서 */
+  .priv-section { padding: 12px 16px; background: white; border: 1px solid var(--border); border-radius: 8px; margin: 10px 0; }
+  .priv-section h4 { font-size: 13px; font-weight: bold; color: var(--green); margin-bottom: 8px; }
+  .priv-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .priv-table th, .priv-table td { padding: 6px 10px; border: 1px solid var(--border); text-align: left; }
+  .priv-table th { background: var(--green-pale); color: var(--green); font-weight: bold; white-space: nowrap; }
+
+  /* 팝업 안내문 */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:2000; align-items:center; justify-content:center; }
+  .modal-box { background:white; border-radius:12px; padding:24px 26px; max-width:480px; width:92%; font-size:13px; line-height:1.65; color:var(--text); box-shadow:0 8px 32px rgba(0,0,0,0.2); }
+  .modal-title { font-size:14px; font-weight:bold; color:var(--green); margin-bottom:8px; }
+  .modal-footer { margin-top:14px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid var(--border); padding-top:12px; }
+  .modal-close-btn { background:var(--green); color:white; border:none; padding:7px 22px; border-radius:6px; cursor:pointer; font-size:13px; }
+  .btn-notice-show { background:none; border:none; color:rgba(255,255,255,0.75); font-size:11.5px; cursor:pointer; text-decoration:underline; padding:0 6px; white-space:nowrap; }
+  .btn-notice-show:hover { color:white; }
+
+  /* 제출용 서식 인쇄 */
+  .print-wrap { background:#e8e7f0; padding:20px; }
+  .print-page { background:white; width:740px; min-height:960px; margin:0 auto 24px; padding:40px 50px; font-family:'Malgun Gothic','NanumGothic',sans-serif; font-size:11.5px; color:#000; line-height:1.65; box-shadow:0 2px 8px rgba(0,0,0,0.12); }
+  /* 관공서 서식 헤더: ■ 법령 [별지 제N호서식] */
+  .pf-form-num { text-align:left; font-size:9.5px; font-weight:bold; color:#000; margin:0 0 4px; }
+  .pf-title { text-align:center; font-size:17px; font-weight:bold; letter-spacing:3px; margin:8px 0 10px; }
+  .pf-subtitle { text-align:center; font-size:10px; color:#555; margin-bottom:16px; }
+  .pf-tbl { width:100%; border-collapse:collapse; margin:4px 0; }
+  .pf-tbl td, .pf-tbl th { border:1px solid #555; padding:5px 8px; vertical-align:middle; font-size:10.5px; }
+  .pf-tbl th { background:#d0d0d0; font-weight:bold; text-align:center; }
+  .pf-tbl .lbl { background:#d0d0d0; font-weight:bold; white-space:nowrap; text-align:center; }
+  .pf-tbl .lbl-v { background:#d0d0d0; font-weight:bold; text-align:center; writing-mode:vertical-rl; letter-spacing:4px; width:28px; }
+  .pf-sign { text-align:right; margin-top:20px; font-size:12px; line-height:2.2; }
+  .pf-to { font-size:12px; margin-top:12px; }
+  .pf-hr { border:none; border-top:2px solid #333; margin:16px 0; }
+  .pf-section { font-weight:bold; font-size:12px; margin:14px 0 4px; }
+  .pf-note { font-size:10px; color:#555; margin-top:6px; }
+  .pf-blank { min-width:80px; display:inline-block; border-bottom:1px solid #333; }
+  .print-action { text-align:center; padding:16px; }
+  .btn-print { background:var(--green); color:white; border:none; padding:10px 32px; border-radius:8px; font-size:14px; cursor:pointer; }
+  .btn-print:hover { background:var(--green-light); }
+
+  @media print {
+    /* 브라우저 기본 여백 제거 — print-page 패딩으로 여백 제어 */
+    @page { margin: 0; }
+
+    /* 검토용 탭 전부 숨김 */
+    .topbar, .tab-nav, .modal-overlay, .print-action,
+    #pane-doc1, #pane-doc2, #pane-doc3, #pane-doc4,
+    #pane-doc5, #pane-doc6, #pane-doc7, #pane-doc8,
+    #pane-doc9, #pane-doc10 { display:none !important; }
+
+    /* 제출용 서식만 출력 — 정관/검토 탭은 인쇄 제외 */
+    #pane-print { display:block !important; }
+    #pane-charter { display:none !important; }
+
+    /* 제출용 서식 탭 안의 안내 헤더·버튼은 인쇄 제외 */
+    #pane-print .doc-hero,
+    #pane-print .container,
+    #pane-print .print-action,
+    .no-print { display:none !important; }
+
+    .print-wrap { background:white; padding:0; }
+
+    /* 각 서식 = 새 페이지 시작, 여백은 padding으로 */
+    .print-page {
+      box-shadow:none; margin:0; width:100%;
+      padding:15mm 20mm;
+      page-break-before:always;
+      page-break-after:auto;
+      min-height:unset;
+    }
+    /* 첫 서식은 빈 페이지 없이 바로 시작 */
+    .print-page:first-child { page-break-before:auto; }
+
+    /* 블록 중간 페이지 끊김 방지 */
+    table { page-break-inside:avoid; }
+    tr { page-break-inside:avoid; }
+    .pf-sign { page-break-inside:avoid; }
+    .pf-section { page-break-after:avoid; }
+    div[style*="padding:20px 24px"] { page-break-inside:avoid; }
+  }
 </style>
 </head>
 <body>
 
+<!-- 안내 팝업 -->
+<div id="modal-notice" class="modal-overlay">
+  <div class="modal-box">
+    <p class="modal-title">발기인 여러분께</p>
+    <p>ADLER MIND 협동조합 설립을 위한 행정 서류들입니다. 법적인 절차라 낯선 부분이 많으시겠지만, <b>"이런 걸 준비해야 하는구나"</b> 하는 마음으로 함께 배워가는 과정이라 생각해 주십시오.</p>
+    <ul style="margin:8px 0 0 2px; padding-left:14px; list-style:none;">
+      <li style="margin-bottom:4px;">· 전체 내용을 검토하신 후 수정이 필요한 부분은 의견 달기로 말씀해 주시면 즉시 반영하겠습니다.</li>
+      <li style="margin-bottom:4px;">· 개인 민감정보(주민등록번호, 생년월일)는 이 파일에 기재하지 않습니다. 최종 제출 서류에만 직접 기재하시면 됩니다.</li>
+      <li style="margin-bottom:4px;">· 사업계획서, 수입지출예산서 등에도 다양한 의견과 동의를 남겨주십시오.</li>
+      <li>· 밤새워 서류를 준비해 준 마루 조합원(AI입니다)에게 감사를 전합니다.</li>
+    </ul>
+    <div style="margin-top:10px; padding:8px 12px; background:var(--yellow); border-radius:7px; border-left:3px solid #e5a100; font-size:12px; line-height:1.6;">
+      <b>· 인감증명서가 필요한가요?</b>
+      <p style="margin-top:3px;">시행규칙 제3조 첨부서류 목록에는 명시되지 않으나, 임원 취임승낙서에 인감날인 시 담당 시·도청에서 추가 요청하는 사례가 있습니다. 제출 전 경기도청 협동조합 담당부서에 확인하시길 권장합니다.</p>
+    </div>
+    <div class="modal-footer">
+      <label style="font-size:12px; cursor:pointer; color:var(--muted);">
+        <input type="checkbox" id="chk-no-show" style="margin-right:4px;"> 7일간 다시 보지 않기
+      </label>
+      <button class="modal-close-btn" onclick="closeNotice()">확인</button>
+    </div>
+  </div>
+</div>
+
 <div class="topbar">
-  <span class="title">📜 ADLER MIND 협동조합 정관 검토</span>
+  <span class="title">ADLER MIND 협동조합 설립신고 서류 검토</span>
+  <button class="btn-notice-show" onclick="document.getElementById('modal-notice').style.display='flex'">안내문 보기</button>
   <label>내 이름:</label>
   <select id="memberSelect">
     <option value="">-- 선택 --</option>
@@ -364,6 +559,23 @@
   </select>
   <span class="comment-count-badge" id="totalCountBadge">의견 0개</span>
 </div>
+
+<div class="tab-nav" role="tablist">
+  <button class="tab-btn active" onclick="switchTab('charter',this)">정관</button>
+  <button class="tab-btn" onclick="switchTab('doc1',this)">① 설립신고서</button>
+  <button class="tab-btn" onclick="switchTab('doc2',this)">② 창립총회 공고문</button>
+  <button class="tab-btn" onclick="switchTab('doc3',this)">③ 창립총회 의사록</button>
+  <button class="tab-btn" onclick="switchTab('doc4',this)">④ 임원명부</button>
+  <button class="tab-btn" onclick="switchTab('doc5',this)">⑤ 발기인·설립동의자 명부</button>
+  <button class="tab-btn" onclick="switchTab('doc6',this)">⑥ 출자자명부</button>
+  <button class="tab-btn" onclick="switchTab('doc7',this)">⑦ 사업계획서</button>
+  <button class="tab-btn" onclick="switchTab('doc8',this)">⑧ 수입지출예산서</button>
+  <button class="tab-btn" onclick="switchTab('doc9',this)">⑨ 임원 취임승낙서</button>
+  <button class="tab-btn" onclick="switchTab('doc10',this)">⑩ 개인정보동의서</button>
+  <button class="tab-btn" onclick="switchTab('print',this)" style="font-weight:bold; color:#555272;">제출용 서식</button>
+</div>
+
+<div id="pane-charter" class="tab-pane active">
 
 <div class="hero">
   <h1>ADLER MIND 협동조합 정관</h1>
@@ -379,7 +591,7 @@
 
   <!-- 동의 현황판 -->
   <div class="approval-panel">
-    <h3>✅ 발기인 동의 현황</h3>
+    <h3>▣ 발기인 동의 현황</h3>
     <div class="approval-grid" id="approvalGrid">
       <div class="approval-card" id="card-이경숙"><div class="member-name">이경숙</div><div class="status-label">미확인</div><div class="approval-time"></div></div>
       <div class="approval-card" id="card-고미경"><div class="member-name">고미경</div><div class="status-label">미확인</div><div class="approval-time"></div></div>
@@ -388,14 +600,14 @@
       <div class="approval-card" id="card-김이수"><div class="member-name">김이수</div><div class="status-label">미확인</div><div class="approval-time"></div></div>
     </div>
     <div class="approval-actions">
-      <button class="btn-approve" onclick="submitApproval('동의')">✅ 정관 전체에 동의합니다</button>
+      <button class="btn-approve" onclick="submitApproval('동의')">정관 전체에 동의합니다</button>
       <button class="btn-hold" onclick="submitApproval('보류')">⏸ 검토 중 (보류)</button>
     </div>
     <p class="approval-note">이름을 선택한 후 클릭하세요. 의견 변경 시 다시 클릭하면 업데이트됩니다.</p>
   </div>
 
   <div class="guide-box">
-    <b>💬 검토 방법</b>
+    <b>· 검토 방법</b>
     상단에서 <strong>내 이름을 선택</strong>한 후, 각 조문 아래 [의견 달기]를 눌러 의견을 남겨주세요.<br>
     <strong>동의</strong> · <strong>수정의견</strong> · <strong>질문</strong> 중 하나를 선택하고 내용을 작성하면 발기인 전원이 실시간으로 확인할 수 있습니다.
   </div>
@@ -411,8 +623,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제1조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제1조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제1조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제1조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -433,8 +645,8 @@
       <div class="ln-ref">참고법령 · 협동조합기본법 제3조(명칭) — 국가법령정보센터 www.law.go.kr</div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제2조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제2조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제2조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제2조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -448,8 +660,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제3조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제3조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제3조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제3조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -463,8 +675,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제4조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제4조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제4조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제4조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -481,12 +693,12 @@
       <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">조문 수정됨</span></div>
       <p>협동조합기본법은 공고방법을 <b>정관으로 정하는 방법으로 위임</b>하며, 신문 게재는 의무사항이 아닙니다. 전자우편·문자메시지 공고는 법적으로 허용됩니다. 창립총회 공고도 동일하며, 신문 공고 의무는 없습니다.</p>
       <p>단, 창립총회 공고문은 설립신고 시 <b>필수 제출 서류</b>입니다. 이메일 발신 기록이나 문자 발송 내역 등 발송 증빙을 반드시 보관해야 설립신고 시 제출할 수 있습니다.</p>
-      <div class="ln-mod">✏️ <b>수정 내용:</b> "이 경우 발송일을 공고일로 본다" 문구를 추가하여 공고 효력 발생 시점을 명확화했습니다. 긴급 통지 후 서면 확인 기한을 기존 <b>7일 → 3일</b>로 단축하고, 전화 통지 후 전자우편으로 확인하는 방식으로 구체화했습니다.</div>
+      <div class="ln-mod">— <b>수정 내용:</b> "이 경우 발송일을 공고일로 본다" 문구를 추가하여 공고 효력 발생 시점을 명확화했습니다. 긴급 통지 후 서면 확인 기한을 기존 <b>7일 → 3일</b>로 단축하고, 전화 통지 후 전자우편으로 확인하는 방식으로 구체화했습니다.</div>
       <div class="ln-ref">참고법령 · 협동조합기본법 제16조(정관의 기재사항), 제22조(설립신고 시 제출서류) — 국가법령정보센터 www.law.go.kr · 기획재정부 협동조합포털 www.coop.go.kr</div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제5조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제5조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제5조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제5조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -512,8 +724,8 @@
       <div class="ln-ref">참고법령 · 협동조합기본법 제6조(협동조합 등의 기본원칙), 제22조(조합원의 가입) — 국가법령정보센터 www.law.go.kr</div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제6조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제6조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제6조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제6조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -539,12 +751,12 @@
       <p>· <b>출자금:</b> 협동조합기본법상 정관 필수 기재사항. 탈퇴 시 환급 가능. 조합 자본금 역할.</p>
       <p>· <b>가입비(입회금):</b> 탈퇴 시 반환하지 않는 수수료 성격. 정관 또는 규약으로 정할 수 있음.</p>
       <p>금액을 <b>규약으로 위임</b>하면 추후 금액 조정 시 총회 의결만으로 가능하여, 정관 변경에 따른 시·도지사 신고 절차를 생략할 수 있어 운영이 유연합니다.</p>
-      <div class="ln-mod">✏️ <b>수정 내용:</b> 제7조(가입) 항목에 "이사회는 총회가 제정한 규약으로 정하는 가입비를 납입하게 할 수 있으며, 가입비는 반환하지 아니한다"는 조항을 추가했습니다.</div>
+      <div class="ln-mod">— <b>수정 내용:</b> 제7조(가입) 항목에 "이사회는 총회가 제정한 규약으로 정하는 가입비를 납입하게 할 수 있으며, 가입비는 반환하지 아니한다"는 조항을 추가했습니다.</div>
       <div class="ln-ref">참고법령 · 협동조합기본법 제16조(정관의 기재사항), 제17조(규약), 제20조(출자금 납입), 제22조(조합원의 가입) — 국가법령정보센터 www.law.go.kr · 찾기쉬운 생활법령정보 www.easylaw.go.kr</div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제7조~제12조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제7조~제12조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제7조~제12조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제7조~제12조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -565,8 +777,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제13조~제16조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제13조~제16조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제13조~제16조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제13조~제16조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -587,8 +799,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제17조~제20조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제17조~제20조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제17조~제20조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제17조~제20조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -610,8 +822,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제21조~제27조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제21조~제27조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제21조~제27조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제21조~제27조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -638,12 +850,12 @@
       <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">조문 수정됨</span></div>
       <p>사업종류를 나중에 추가하려면 <b>정관 변경(총회 결의 + 시·도지사 신고)</b>이 필요합니다. 초기에 폭넓게 기재해두면 이 절차를 반복할 필요가 없습니다.</p>
       <p>통신판매업을 정관에 명시해두면 향후 스마트스토어·온라인 강의 플랫폼 입점 시 사업자등록 업종 추가가 용이합니다. 협동조합 사업은 조합원의 권익과 연관된 사업이어야 하며, 심리상담·교육과 연관된 온라인 사업은 모두 포함 가능합니다.</p>
-      <div class="ln-mod">✏️ <b>수정 내용:</b> 기존 4개 사업 외에 <b>5호(온라인 강의 및 디지털 교육 콘텐츠 제작·운영·판매)</b>와 <b>6호(전자상거래·통신판매)</b> 2개를 추가했습니다. 부수 사업 번호를 기존 5호에서 <b>7호</b>로 변경했습니다.</div>
+      <div class="ln-mod">— <b>수정 내용:</b> 기존 4개 사업 외에 <b>5호(온라인 강의 및 디지털 교육 콘텐츠 제작·운영·판매)</b>와 <b>6호(전자상거래·통신판매)</b> 2개를 추가했습니다. 부수 사업 번호를 기존 5호에서 <b>7호</b>로 변경했습니다.</div>
       <div class="ln-ref">참고법령 · 협동조합기본법 제45조(사업의 종류), 전자상거래 등에서의 소비자보호에 관한 법률 제2조(정의) — 국가법령정보센터 www.law.go.kr · 기획재정부 협동조합포털 www.coop.go.kr · 찾기쉬운 생활법령정보 www.easylaw.go.kr</div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제28조~제29조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제28조~제29조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제28조~제29조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제28조~제29조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -664,8 +876,8 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'제30조~제38조')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제30조~제38조')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'제30조~제38조')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'제30조~제38조')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
@@ -704,13 +916,1587 @@
       </div>
     </div>
     <div class="comment-section">
-      <button class="comment-toggle" onclick="toggleForm(this,'전체')">💬 의견 달기 <span class="count-badge">로딩중</span></button>
-      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">✅ 동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">✏️ 수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">❓ 질문</button></div><textarea class="comment-input" placeholder="전체적인 의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'전체')">제출</button></div></div>
+      <button class="comment-toggle" onclick="toggleForm(this,'전체')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="전체적인 의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'전체')">제출</button></div></div>
       <div class="comments-list"></div>
     </div>
   </div>
 
 </div>
+
+</div><!-- /pane-charter -->
+
+<!-- ========== ① 설립신고서 ========== -->
+<div id="pane-doc1" class="tab-pane">
+<div class="doc-hero">
+  <h2>① 설립신고서</h2>
+  <p class="doc-subtitle">협동조합기본법 시행규칙 [별지 제2호서식] &lt;개정 2020. 9. 29.&gt;</p>
+  <div class="doc-meta"><span>제출처: 경기도지사</span><span>처리기간: 20일</span><span>수수료: 없음</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>창립총회 개최 후 경기도지사에게 제출합니다. <span class="need-check">확인 필요</span> 항목은 총회 후 확정 값으로 채우고, <span class="secure">보안</span> 항목은 제출 직전 오프라인으로 기입합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">설립신고서 본문</div></div>
+  <div class="article" data-article="설립신고서::본문">
+    <div class="article-header">
+      <span class="article-num">신고서</span>
+      <div class="article-body">
+        <div class="article-title">협동조합 설립신고서 (협동조합기본법 제15조)</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><td colspan="2" class="form-section-header">신고 구분</td></tr>
+            <tr><th>유형</th><td>[✓] 협동조합 &nbsp;&nbsp; [ ] 협동조합연합회</td></tr>
+            <tr><td colspan="2" class="form-section-header">설립신고인 (발기인 대표)</td></tr>
+            <tr><th>성명</th><td><span class="confirmed-val">김이수</span></td></tr>
+            <tr><th>생년월일</th><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+            <tr><th>주소</th><td><span class="need-check">확인 필요 — 김이수 주소</span></td></tr>
+            <tr><th>전화번호</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td colspan="2" class="form-section-header">신고 내용</td></tr>
+            <tr><th>설립동의자 수</th><td><span class="confirmed-val">5명</span></td></tr>
+            <tr><th>출자금 납입총액</th><td><span class="need-check">확인 필요 — 출자좌수 확정 후 기재 (1좌 = 100,000원)</span></td></tr>
+            <tr><th>창립총회 개최일</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td colspan="2" class="form-section-header">협동조합 정보</td></tr>
+            <tr><th>조합 명칭</th><td><span class="confirmed-val">ADLER MIND 협동조합</span></td></tr>
+            <tr><th>전화번호</th><td><span class="need-check">확인 필요 — 조합 공식 연락처</span></td></tr>
+            <tr><th>소재지</th><td><span class="confirmed-val">경기도 광주시 남종면 산수로 1652-16</span></td></tr>
+            <tr><td colspan="2" class="form-section-header">이사장 정보</td></tr>
+            <tr><th>이사장 성명</th><td><span class="confirmed-val">이경숙</span></td></tr>
+            <tr><th>이사장 주민등록번호</th><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+            <tr><th>이사장 전화번호</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><th>이사장 전자우편</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><th>이사장 주소</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td colspan="2" class="form-section-header">임원 확인 사항</td></tr>
+            <tr><th>임원 결격사유 해당 여부<br>(법 제36조제1항 각호)</th><td>[✓] 해당 없음 &nbsp; <span class="need-check">각 임원 자기 확인 후 서명 필요</span></td></tr>
+            <tr><th>이사장 겸직 여부<br>(법 제44조제1항)</th><td>[✓] 해당 없음 &nbsp; <span class="need-check">이경숙 이사장 확인 필요</span></td></tr>
+          </table>
+          <p style="margin-top:12px; font-size:12px; color:var(--muted);">협동조합기본법 제15조제1항에 따라 위와 같이 설립하였음을 신고합니다.<br>2026년 &nbsp;&nbsp;&nbsp; 월 &nbsp;&nbsp;&nbsp; 일 &nbsp;&nbsp;&nbsp; 신고인: 김이수 (인)</p>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">확인 필요 항목 있음</span></div>
+      <p><b>· 검토 완료 사항</b></p>
+      <p>· 법 제15조제1항: 설립동의자 <b>5인 이상</b> 요건 → 5명으로 충족</p>
+      <p>· 제출처: <b>경기도지사</b> — 조합 사무소 소재지(경기도 광주시) 기준으로 경기도지사에게 신고합니다.</p>
+      <p>· 처리기간 20일, 수수료 없음 (법 제15조제2항)</p>
+      <p><b>·임원 4명이 각자 확인할 사항 — 결격사유 (법 제36조제1항)</b></p>
+      <p>아래 중 하나라도 해당하면 임원이 될 수 없어요. 해당 없으면 서명하시면 됩니다.</p>
+      <p style="padding-left:16px; display:block;">① 피성년후견인·피한정후견인 (법원이 판단 능력을 제한한 분)</p>
+      <p style="padding-left:16px; display:block;">② 파산선고 후 복권(권리 회복) 되지 않은 분</p>
+      <p style="padding-left:16px; display:block;">③ 금고 이상 실형(실제 복역) 받고 2년이 안 된 분</p>
+      <p style="padding-left:16px; display:block;">④ 금고 이상 집행유예(바로 복역 대신 일정 기간 지켜보는 처벌) 기간 중인 분</p>
+      <p style="padding-left:16px; display:block;">⑤ 협동조합기본법 위반으로 벌금형 받고 2년이 안 된 분</p>
+      <p style="padding-left:16px; display:block;">⑥ 선거범죄로 벌금 100만원 이상 받고 5년이 안 된 분</p>
+      <p><b>·이사장 겸직 금지 (법 제44조제1항)</b>: 이경숙 이사장님은 다른 협동조합의 이사장을 동시에 맡을 수 없어요. 해당 없으시면 OK입니다.</p>
+      <p><b>·기재 시기</b>: 출자금 납입 총액과 창립총회 날짜는 총회 후 확정되므로 총회가 끝난 뒤 기입합니다.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제15조(설립신고), 제36조(임원 결격사유), 제44조(겸직 금지) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'설립신고서::본문')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'설립신고서::본문')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="chapter"><div class="chapter-title">첨부서류 체크리스트</div></div>
+  <div class="article" data-article="설립신고서::첨부서류">
+    <div class="article-header">
+      <span class="article-num">첨부목록</span>
+      <div class="article-body">
+        <div class="article-title">설립신고 첨부서류 8종 (협동조합기본법 시행규칙 제5조)</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th style="width:10%">번호</th><th style="width:60%">서류명</th><th>준비 상태</th></tr>
+            <tr><td class="td-num">1</td><td>정관 사본 1부</td><td><span class="confirmed-val">검토 중</span></td></tr>
+            <tr><td class="td-num">2</td><td>창립총회 개최 공고문 사본 1부</td><td><span class="need-check">날짜 확정 후</span></td></tr>
+            <tr><td class="td-num">3</td><td>창립총회 의사록 사본 1부</td><td><span class="need-check">총회 개최 후</span></td></tr>
+            <tr><td class="td-num">4</td><td>임원 명부 1부</td><td><span class="need-check">주민번호 오프라인 기입 후</span></td></tr>
+            <tr><td class="td-num">5</td><td>사업계획서 1부</td><td><span class="need-check">예산 금액 확정 후</span></td></tr>
+            <tr><td class="td-num">6</td><td>수입·지출 예산서 1부</td><td><span class="need-check">예산 금액 확정 후</span></td></tr>
+            <tr><td class="td-num">7</td><td>출자 1좌당 금액과 조합원별 인수좌수를 적은 서류 1부</td><td><span class="need-check">출자좌수 확정 후</span></td></tr>
+            <tr><td class="td-num">8</td><td>발기인 및 설립동의자 명부 1부</td><td><span class="need-check">주민번호 오프라인 기입 후</span></td></tr>
+          </table>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 합병·분할에 의한 설립이 아니므로 합병·분할 관련 서류는 해당 없음.</p>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'설립신고서::첨부서류')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'설립신고서::첨부서류')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc1 -->
+
+<!-- ========== ② 창립총회 공고문 ========== -->
+<div id="pane-doc2" class="tab-pane">
+<div class="doc-hero">
+  <h2>② 창립총회 개최 공고문</h2>
+  <p class="doc-subtitle">협동조합기본법 제14조제2항 — 총회 7일 전까지 공고</p>
+  <div class="doc-meta"><span>공고 방법: 서면 또는 전자적 방법(발기인 전원 통지)</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>창립총회 7일 전까지 설립동의자 전원에게 공고·통지하여야 합니다. 발기인 5명 전원 출석 예정이더라도 신고서류 첨부용 공고문을 별도 보관해야 합니다. 카카오톡 전송 캡처, 이메일 발송 기록 등을 보관하시면 됩니다.</div>
+
+  <div class="chapter"><div class="chapter-title">공고문 본문</div></div>
+  <div class="article" data-article="창립총회공고문::본문">
+    <div class="article-header">
+      <span class="article-num">공고문</span>
+      <div class="article-body">
+        <div class="article-title">창립총회 개최 공고</div>
+        <div class="article-content">
+          <div style="background:white; border:1px solid var(--border); border-radius:8px; padding:28px 32px; font-size:13.5px; line-height:2; font-family:'Noto Serif KR', Georgia, serif; max-width:640px; margin:0 auto;">
+            <p style="text-align:center; font-size:16px; font-weight:bold; margin-bottom:20px;">ADLER MIND 협동조합 창립총회 개최 공고</p>
+            <p>ADLER MIND 협동조합 창립총회를 아래와 같이 개최하오니 설립동의자 여러분의 참석을 부탁드립니다.</p>
+            <br>
+            <p><b>— 아 래 —</b></p>
+            <br>
+            <table style="width:100%; border:none; font-size:13.5px;">
+              <tr><td style="width:90px; vertical-align:top; padding-bottom:8px;"><b>일 &nbsp;&nbsp; 시</b></td><td>2026년 <span class="need-check">확인 필요</span>월 <span class="need-check">확인 필요</span>일(<span class="need-check">요일</span>) <span class="need-check">확인 필요</span>시</td></tr>
+              <tr><td style="vertical-align:top; padding-bottom:8px;"><b>장 &nbsp;&nbsp; 소</b></td><td><span class="need-check">확인 필요 — 개최 장소</span></td></tr>
+              <tr><td style="vertical-align:top;"><b>안 &nbsp;&nbsp; 건</b></td><td>
+                제1호 의안. 정관 승인의 건<br>
+                제2호 의안. 2026년도 사업계획(안) 및 수입·지출 예산(안) 승인의 건<br>
+                제3호 의안. 임원 선출의 건<br>
+                제4호 의안. 설립경비 등 기타 설립에 필요한 안건
+              </td></tr>
+            </table>
+            <br>
+            <p style="text-align:right; font-size:13px; color:var(--muted);">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일<br><br>ADLER MIND 협동조합 발기인 대표 &nbsp;&nbsp; 김이수 (인)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">날짜 확정 필요</span></div>
+      <p><b>· 검토 완료 사항</b></p>
+      <p>· 법 제14조제2항: 창립총회는 <b>최소 7일 전</b>에 발기인 전원에게 알려야 해요. 날짜 확정 후 그에 맞춰 공고하시면 됩니다.</p>
+      <p>· 안건 4가지 구성 완료 (정관 승인 · 예산 승인 · 임원 선출 · 설립경비 처리)</p>
+      <p>· 발기인 대표(김이수) 명의로 공고하는 방식, 적법합니다.</p>
+      <p><b>·공고 방법</b></p>
+      <p>· 카카오톡이나 이메일로 5명에게 이 공고문을 보내면 요건이 충족돼요.</p>
+      <p>· 나중에 신고 서류로 쓸 수 있으니 메시지 캡처나 이메일 발송 기록을 저장해 두세요.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제14조(창립총회), 시행령 제9조 — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회공고문::본문')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회공고문::본문')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc2 -->
+
+<!-- ========== ③ 창립총회 의사록 ========== -->
+<div id="pane-doc3" class="tab-pane">
+<div class="doc-hero">
+  <h2>③ 창립총회 의사록</h2>
+  <p class="doc-subtitle">협동조합기본법 제14조 · 동법 시행령 제9조 — 공정증서 의사록</p>
+  <div class="doc-meta"><span>재적: 5명</span><span>안건: 4개</span><span>서명인: 기명날인인 3인</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>창립총회 당일 작성합니다. 날짜·장소가 확정되면 <span class="need-check">확인 필요</span> 항목을 채워주세요. 의사록은 공정증서(공증)로 작성하거나 기명날인인 3인 이상이 서명하면 됩니다.</div>
+
+  <div class="chapter"><div class="chapter-title">기본 사항</div></div>
+  <div class="article" data-article="창립총회의사록::기본사항">
+    <div class="article-header">
+      <span class="article-num">기본사항</span>
+      <div class="article-body">
+        <div class="article-title">총회 기본 정보</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>공고 일시</th><td><span class="need-check">확인 필요 — 총회일 7일 전</span></td></tr>
+            <tr><th>총회 일시</th><td>2026년 <span class="need-check">확인 필요</span>월 <span class="need-check">확인 필요</span>일 <span class="need-check">확인 필요</span>시 ~ <span class="need-check">확인 필요</span>시</td></tr>
+            <tr><th>총회 장소</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><th>재적 설립동의자</th><td><span class="confirmed-val">5명</span> (이경숙, 고미경, 신옥선, 박정연, 김이수)</td></tr>
+            <tr><th>출석 설립동의자</th><td><span class="confirmed-val">5명</span> — 전원 출석, 성원 충족</td></tr>
+            <tr><th>의장</th><td>김이수 (발기인 대표, 임시 의장으로 선출)</td></tr>
+            <tr><th>서기</th><td><span class="need-check">확인 필요 — 총회에서 지정</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::기본사항')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::기본사항')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="chapter"><div class="chapter-title">총회 안건 및 결의</div></div>
+
+  <div class="article" data-article="창립총회의사록::제1호의안">
+    <div class="article-header">
+      <span class="article-num">제1호 의안</span>
+      <div class="article-body">
+        <div class="article-title">정관 승인의 건</div>
+        <div class="article-content">
+          <div class="minutes-body">
+            <p>의장이 정관(안)을 설명하고 원안 채택 여부를 의결에 부쳤다.</p>
+            <div class="minutes-item">
+              <b>의결 결과</b><br>
+              재적 5명, 출석 5명, 찬성 5명, 반대 0명, 기권 0명<br>
+              → <b>원안 가결</b> (만장일치)
+            </div>
+            <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 정관 전문은 별도 첨부 문서로 제출</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::제1호의안')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::제1호의안')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="창립총회의사록::제2호의안">
+    <div class="article-header">
+      <span class="article-num">제2호 의안</span>
+      <div class="article-body">
+        <div class="article-title">2026년도 사업계획(안) 및 수입·지출 예산(안) 승인의 건</div>
+        <div class="article-content">
+          <div class="minutes-body">
+            <p>의장이 2026년도 사업계획(안) 및 수입·지출 예산(안)을 설명하고 원안 채택 여부를 의결에 부쳤다.</p>
+            <div class="minutes-item">
+              <b>사업계획 주요 내용</b><br>
+              · 사업개시일: 2026년 8월 15일<br>
+              · 주요 사업: 아들러 개인심리학 기반 상담·교육·콘텐츠 제작 등 6개 사업<br>
+              · 회계연도: 2026년 8월 15일 ~ 2026년 12월 31일
+            </div>
+            <div class="minutes-item">
+              <b>예산 주요 내용</b><br>
+              · 출자금 수입: <span class="need-check">확인 필요 (출자좌수 확정 후)</span><br>
+              · 사업 수입: <span class="need-check">확인 필요</span><br>
+              · 지출 합계: <span class="need-check">확인 필요</span>
+            </div>
+            <div class="minutes-item">
+              <b>의결 결과</b><br>
+              재적 5명, 출석 5명, 찬성 5명, 반대 0명, 기권 0명<br>
+              → <b>원안 가결</b> (만장일치)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::제2호의안')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::제2호의안')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="창립총회의사록::제3호의안">
+    <div class="article-header">
+      <span class="article-num">제3호 의안</span>
+      <div class="article-body">
+        <div class="article-title">임원 선출의 건</div>
+        <div class="article-content">
+          <div class="minutes-body">
+            <p>의장이 임원 선출 안건을 상정하고, 출석 설립동의자 중 추천을 받아 무기명 투표로 의결에 부쳤다.</p>
+            <div class="minutes-item">
+              <b>이사 선출 결과</b><br>
+              · 이사: 이경숙, 고미경, 신옥선 (각 찬성 5명, 만장일치)<br>
+              · 감사: 박정연 (찬성 5명, 만장일치)
+            </div>
+            <div class="minutes-item">
+              <b>이사장 호선 (선출된 이사 중 호선)</b><br>
+              이사 상호간 협의에 의해 <b>이경숙</b>을 이사장으로 호선함.<br>
+              이경숙 이사장이 취임 승낙함.
+            </div>
+            <div class="minutes-item">
+              <b>의결 결과</b><br>
+              재적 5명, 출석 5명, 찬성 5명, 반대 0명, 기권 0명<br>
+              → <b>원안 가결</b> (만장일치)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">적법</span></div>
+      <p>· 법 제22조: 임원은 총회(발기인 모임)에서 직접 투표로 뽑아야 해요 → 투표 방식으로 선출, 적법합니다.</p>
+      <p>· 법 제35조제2항: 이사 2명 이상 필요 → 이사 3명(이경숙·고미경·신옥선)으로 충족</p>
+      <p>· 법 제35조제2항: 감사(재정을 감독하는 역할) 1명 이상 필요 → 박정연 감사로 충족</p>
+      <p>· 법 제44조제1항: 이사장은 이사들끼리 서로 뽑는 방식(호선)으로 결정하는 게 정관과 법 모두 OK예요 → 이경숙 이사장 선출 적법</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제22조(의결권), 제35조(임원의 수), 제44조(이사장) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::제3호의안')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::제3호의안')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="창립총회의사록::제4호의안">
+    <div class="article-header">
+      <span class="article-num">제4호 의안</span>
+      <div class="article-body">
+        <div class="article-title">설립경비 등 기타 설립에 필요한 안건</div>
+        <div class="article-content">
+          <div class="minutes-body">
+            <p>의장이 설립 준비 과정에서 발생한 비용의 처리와 향후 운영 절차를 설명하고 의결에 부쳤다.</p>
+            <div class="minutes-item">
+              <b>설립경비 처리</b><br>
+              · 설립 관련 비용(문서 출력, 통신비 등): <span class="need-check">확인 필요 — 발생 비용 정리 필요</span><br>
+              · 처리 방법: 출자금에서 충당
+            </div>
+            <div class="minutes-item">
+              <b>임시 계좌 및 사업개시 예정일 확인</b><br>
+              · 출자금 납입 계좌: 농협 351-09357711-73 (예금주: 김이수)<br>
+              · 사업개시 예정일: 2026년 8월 15일
+            </div>
+            <div class="minutes-item">
+              <b>의결 결과</b><br>
+              재적 5명, 출석 5명, 찬성 5명, 반대 0명, 기권 0명<br>
+              → <b>원안 가결</b> (만장일치)
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::제4호의안')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::제4호의안')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="chapter"><div class="chapter-title">폐회 및 기명날인</div></div>
+  <div class="article" data-article="창립총회의사록::폐회">
+    <div class="article-header">
+      <span class="article-num">폐회</span>
+      <div class="article-body">
+        <div class="article-title">총회 폐회 및 기명날인</div>
+        <div class="article-content">
+          <div class="minutes-body">
+            <p>의장이 모든 안건을 처리하였음을 확인하고 <span class="need-check">확인 필요</span>시에 총회를 폐회하였다.</p>
+            <p>위 의사(議事)의 결정이 명확함을 증명하기 위하여 의사록을 작성하고 아래 기명날인인이 기명날인 또는 서명한다.</p>
+            <br>
+            <p style="text-align:right; font-size:13px;">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일</p>
+            <table class="official-form" style="margin-top:12px;">
+              <tr><th style="width:25%">직위</th><th>성명</th><th>서명 / 날인</th></tr>
+              <tr><td>이사장</td><td>이경숙</td><td style="min-width:120px;">&nbsp;</td></tr>
+              <tr><td>이사</td><td>고미경</td><td>&nbsp;</td></tr>
+              <tr><td>이사</td><td>신옥선</td><td>&nbsp;</td></tr>
+            </table>
+            <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 이사장·이사 3인 기명날인으로 의사록 효력 발생 (시행령 제9조)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">적법</span></div>
+      <p>· 시행령 제9조: 의사록에는 총회에서 어떤 안건을 어떻게 논의했고 결과가 무엇인지 적어야 해요. 그리고 의장과 이사들이 직접 이름을 쓰고 도장을 찍어야(기명날인) 효력이 생깁니다.</p>
+      <p>· 서명 필요 인원: 이사장(이경숙) + 이사 2명(고미경, 신옥선) = 3명 → 충족</p>
+      <p>· 감사(박정연)는 반드시 서명하지 않아도 되지만, 원하시면 추가 서명하셔도 괜찮아요.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 시행령 제9조(창립총회 의사록) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'창립총회의사록::폐회')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'창립총회의사록::폐회')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc3 -->
+
+<!-- ========== ④ 임원명부 ========== -->
+<div id="pane-doc4" class="tab-pane">
+<div class="doc-hero">
+  <h2>④ 임원명부</h2>
+  <p class="doc-subtitle">협동조합기본법 시행규칙 [별지 제3호서식]</p>
+  <div class="doc-meta"><span>임원 4명</span><span>이사 3명 · 감사 1명</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>주민등록번호와 주소는 <span class="secure">보안</span> 처리되며, 설립신고서 제출 직전 오프라인으로 기입합니다. 주소는 임원 각자가 직접 확인하여 기재합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">임원명부 본문</div></div>
+  <div class="article" data-article="임원명부::본문">
+    <div class="article-header">
+      <span class="article-num">명부</span>
+      <div class="article-body">
+        <div class="article-title">ADLER MIND 협동조합 임원명부</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th style="width:15%">직위</th><th style="width:15%">성명</th><th style="width:25%">주민등록번호</th><th>주소</th></tr>
+            <tr><td>이사장</td><td>이경숙</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>이사</td><td>고미경</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>이사</td><td>신옥선</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>감사</td><td>박정연</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">위 임원명부가 사실과 같음을 확인합니다.<br>2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일 &nbsp;&nbsp; ADLER MIND 협동조합 이사장 이경숙 (인)</p>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">구성 적법</span></div>
+      <p>· 법 제35조제2항: 이사 2명 이상, 감사 1명 이상 필요 → 이사 3명, 감사 1명으로 충족</p>
+      <p>· 법 제44조제1항: 이사장은 이사들끼리 서로 뽑는 방식(호선)으로 선출 → 이경숙 이사장 적법</p>
+      <p>· <b>임기 시작일 권장</b>: 이사·감사 모두 임기 2년이라면, 의사록에 "임기 시작일: 창립총회 당일"이라고 한 줄 명시해 두시면 나중에 헷갈리지 않아요.</p>
+      <p>· 법 제36조제1항: 임원 4명이 각자 "결격사유(임원이 될 수 없는 조건)에 해당하지 않는다"고 직접 확인 후 서명해야 합니다.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제35조(임원의 수), 제36조(결격사유), 제44조(이사장) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'임원명부::본문')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'임원명부::본문')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc4 -->
+
+<!-- ========== ⑤ 발기인 및 설립동의자 명부 ========== -->
+<div id="pane-doc5" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑤ 발기인 및 설립동의자 명부</h2>
+  <p class="doc-subtitle">협동조합기본법 시행규칙 [별지 제6호서식]</p>
+  <div class="doc-meta"><span>발기인 겸 설립동의자: 5명</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>발기인 5명이 모두 설립동의자입니다. 주민등록번호와 주소는 <span class="secure">보안</span> 처리되며, 제출 직전 오프라인으로 기입 후 각자 서명·날인합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">발기인 및 설립동의자 명부</div></div>
+  <div class="article" data-article="발기인명부::본문">
+    <div class="article-header">
+      <span class="article-num">명부</span>
+      <div class="article-body">
+        <div class="article-title">ADLER MIND 협동조합 발기인 및 설립동의자 명부</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th style="width:8%">번호</th><th style="width:15%">성명</th><th style="width:22%">주민등록번호</th><th style="width:35%">주소</th><th>서명 / 날인</th></tr>
+            <tr><td class="td-num">1</td><td>이경숙</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td><td>&nbsp;</td></tr>
+            <tr><td class="td-num">2</td><td>고미경</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td><td>&nbsp;</td></tr>
+            <tr><td class="td-num">3</td><td>신옥선</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td><td>&nbsp;</td></tr>
+            <tr><td class="td-num">4</td><td>박정연</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td><td>&nbsp;</td></tr>
+            <tr><td class="td-num">5</td><td>김이수</td><td><span class="secure">보안</span></td><td><span class="need-check">확인 필요</span></td><td>&nbsp;</td></tr>
+          </table>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">위 발기인 및 설립동의자 명부가 사실과 같음을 확인합니다.<br>2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일</p>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">인원 충족</span></div>
+      <p>· 법 제15조제1항: 설립에 동의한 사람이 5명 이상이어야 해요 → 발기인 5명으로 충족</p>
+      <p>· 시행규칙 별지 제6호서식: 번호, 성명, 주민등록번호, 주소, 서명 순서로 기재합니다.</p>
+      <p>· 주민등록번호는 실제 제출용 종이 서류에만 쓰고, 이 검토 파일에는 적지 않아요.</p>
+      <p>· 5명 각자가 직접 서명하거나 도장을 찍어야(날인) 효력이 생깁니다.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제15조(설립신고), 시행규칙 별지 제6호서식 — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'발기인명부::본문')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'발기인명부::본문')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc5 -->
+
+<!-- ========== ⑥ 출자자명부 ========== -->
+<div id="pane-doc6" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑥ 출자자명부</h2>
+  <p class="doc-subtitle">출자 1좌당 금액과 조합원별 인수 출자좌수를 적은 서류</p>
+  <div class="doc-meta"><span>1좌 = 100,000원</span><span>최소 1좌</span><span>최대 전체 30% 이하</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>각 발기인이 몇 좌를 인수할지 결정한 후 작성합니다. 1인 최대 인수 가능 금액은 전체 출자금의 30% 이하입니다 (법 제22조제2항 준용). 발기인 각자가 상의하여 좌수를 결정해 주세요.</div>
+
+  <div class="chapter"><div class="chapter-title">출자자명부 본문</div></div>
+  <div class="article" data-article="출자자명부::본문">
+    <div class="article-header">
+      <span class="article-num">명부</span>
+      <div class="article-body">
+        <div class="article-title">ADLER MIND 협동조합 출자자명부</div>
+        <div class="article-content">
+          <p style="font-size:12.5px; margin-bottom:10px; color:var(--text);">출자 1좌당 금액: <b>금 100,000원(일금 십만 원 정)</b></p>
+          <table class="official-form">
+            <tr><th style="width:8%">번호</th><th style="width:20%">성명</th><th style="width:22%">생년월일</th><th style="width:20%">인수 출자좌수</th><th>출자금액 (원)</th></tr>
+            <tr><td class="td-num">1</td><td>이경숙</td><td><span class="secure">보안</span></td><td>1좌</td><td>100,000</td></tr>
+            <tr><td class="td-num">2</td><td>고미경</td><td><span class="secure">보안</span></td><td>1좌</td><td>100,000</td></tr>
+            <tr><td class="td-num">3</td><td>신옥선</td><td><span class="secure">보안</span></td><td>1좌</td><td>100,000</td></tr>
+            <tr><td class="td-num">4</td><td>박정연</td><td><span class="secure">보안</span></td><td>1좌</td><td>100,000</td></tr>
+            <tr><td class="td-num">5</td><td>김이수</td><td><span class="secure">보안</span></td><td>1좌</td><td>100,000</td></tr>
+            <tr style="background:var(--cream);"><td colspan="3" style="text-align:right; font-weight:bold;">합 계</td><td>5좌</td><td>500,000</td></tr>
+          </table>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 생년월일: 실제 제출 서류에 기재 (이 검토 파일에는 보안 처리)<br>※ 1인 최대 인수좌수: 전체 출자금의 30/100 초과 불가 (협동조합기본법 제22조제2항)</p>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">기재 완료</span></div>
+      <p>· 법 제22조제2항: 한 사람이 전체 출자금의 30%를 넘게 낼 수 없어요. (특정 사람이 너무 많은 지분을 갖지 않도록 막는 규정이에요.)</p>
+      <p>· 현재 기준: 5명 각 1좌 → 총 5좌, 총 출자금 500,000원. 1인 지분 20%로 30% 이하 기준 충족.</p>
+      <p>· 이후 좌수를 늘리고 싶은 분이 계시면 의견 달기로 말씀해 주세요. 1인 최대 1좌(100,000원 = 전체의 20%)이므로 현재 구조에서는 상한에 여유가 있습니다.</p>
+      <p>· 출자금은 창립총회 전까지 임시계좌(농협 351-09357711-73, 예금주 김이수)에 입금하면 됩니다.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제22조(출자), 제43조(출자자명부) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'출자자명부::본문')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'출자자명부::본문')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc6 -->
+
+<!-- ========== ⑦ 사업계획서 ========== -->
+<div id="pane-doc7" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑦ 사업계획서</h2>
+  <p class="doc-subtitle">협동조합기본법 제15조 · 시행규칙 별지 제2호서식 첨부 — 설립신고 첨부서류</p>
+  <div class="doc-meta"><span>사업연도: 2026. 8. 15 ~ 2026. 12. 31</span><span>사업 6개</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>정관 제28조에서 정한 6개 사업을 기반으로 작성합니다. 수치(목표 인원, 예상수입 등)는 <span class="need-check">확인 필요</span> 처리되어 있으며, 발기인들의 협의 후 확정합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">조직 개요</div></div>
+  <div class="article" data-article="사업계획서::조직개요">
+    <div class="article-header">
+      <span class="article-num">조직개요</span>
+      <div class="article-body">
+        <div class="article-title">1. 조직 기본 사항</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>조합 명칭</th><td><span class="confirmed-val">ADLER MIND 협동조합</span></td></tr>
+            <tr><th>주된 사무소</th><td><span class="confirmed-val">경기도 광주시 남종면 산수로 1652-16</span></td></tr>
+            <tr><th>대표자 (이사장)</th><td><span class="confirmed-val">이경숙</span></td></tr>
+            <tr><th>설립 유형</th><td>일반협동조합 (협동조합기본법 적용)</td></tr>
+            <tr><th>조합원 수</th><td><span class="confirmed-val">5명</span> (발기인 전원)</td></tr>
+            <tr><th>출자금</th><td>1좌 100,000원 / 총 <span class="need-check">확인 필요</span>원 (출자좌수 확정 후)</td></tr>
+            <tr><th>사업 기간</th><td>2026년 8월 15일 ~ 2026년 12월 31일 (설립 첫 회계연도, 약 4.5개월)</td></tr>
+            <tr><th>사업 목적</th><td>아들러 개인심리학(Individual Psychology)에 기반한 심리상담·교육·콘텐츠 제작 서비스를 통해 조합원 및 지역사회의 심리적 건강과 공동체 감각(Gemeinschaftsgefühl)을 높인다.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::조직개요')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::조직개요')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="chapter"><div class="chapter-title">사업별 계획</div></div>
+
+  <div class="article" data-article="사업계획서::제1사업">
+    <div class="article-header">
+      <span class="article-num">제1사업</span>
+      <div class="article-body">
+        <div class="article-title">아들러 개인심리학 기반 개인·집단 심리상담 서비스</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>아들러 개인심리학 원리에 기반한 개인 심리상담(1:1) 및 집단 심리상담 프로그램 운영</td></tr>
+            <tr><th>주요 프로그램</th><td>· 개인상담 (50분 × n회기)<br>· 집단프로그램 (나비, 연리지 등 정기 프로그램)</td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요 — 수혜자 수, 프로그램 수</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제1사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제1사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="사업계획서::제2사업">
+    <div class="article-header">
+      <span class="article-num">제2사업</span>
+      <div class="article-body">
+        <div class="article-title">심리상담 관련 교육·연수·강의 사업</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>아들러 심리학 관련 상담사 역량 강화 연수, 부모교육 프로그램, 기관 위탁 강의 등</td></tr>
+            <tr><th>주요 대상</th><td>상담사, 교사, 학부모, 복지 종사자</td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요 — 연수 횟수, 참가 인원</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제2사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제2사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="사업계획서::제3사업">
+    <div class="article-header">
+      <span class="article-num">제3사업</span>
+      <div class="article-body">
+        <div class="article-title">심리상담 관련 콘텐츠 제작 및 출판 사업</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>상담 현장에서 활용 가능한 워크시트, 활동지, 교육 교재, 뉴스레터 등 콘텐츠 개발 및 배포</td></tr>
+            <tr><th>주요 형태</th><td>PDF 교재, HTML 활동지, 뉴스레터(마음자리), 브런치 글 등</td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요 — 콘텐츠 종수</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제3사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제3사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="사업계획서::제4사업">
+    <div class="article-header">
+      <span class="article-num">제4사업</span>
+      <div class="article-body">
+        <div class="article-title">상담 공간 및 시설의 공동 이용 및 관리 사업</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>조합 사무소(경기도 광주시 남종면 산수로 1652-16)를 조합원 공동 이용 상담 공간으로 운영</td></tr>
+            <tr><th>이용 방법</th><td><span class="need-check">확인 필요 — 예약 방식, 이용 요금, 시간 배분</span></td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제4사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제4사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="사업계획서::제5사업">
+    <div class="article-header">
+      <span class="article-num">제5사업</span>
+      <div class="article-body">
+        <div class="article-title">온라인 강의 및 디지털 교육 콘텐츠 제작·운영·판매 사업</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>아들러 심리학 기반 온라인 강의 제작, 스트리밍 플랫폼(유튜브, 클래스101 등) 연계 운영</td></tr>
+            <tr><th>주요 형태</th><td>유튜브 강의, 온라인 동영상 강좌, 디지털 교육 자료</td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요 — 강의 편수, 구독자 목표</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제5사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제5사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="사업계획서::제6사업">
+    <div class="article-header">
+      <span class="article-num">제6사업</span>
+      <div class="article-body">
+        <div class="article-title">심리상담·교육 관련 물품 및 콘텐츠의 전자상거래·통신판매 사업</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th>사업 내용</th><td>온라인 스토어를 통한 교육 자료, 워크북, 전자책 등 판매</td></tr>
+            <tr><th>주요 채널</th><td><span class="need-check">확인 필요 — 스마트스토어, 크몽 등 플랫폼 결정 필요</span></td></tr>
+            <tr><th>2026년 목표</th><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><th>예상 수입</th><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 전체 사업계획서 법적 검토 결과 <span class="tag-keep">사업 범위 적법</span></div>
+      <p>· 법 제45조제1항: 협동조합은 정관에 적어 놓은 사업만 할 수 있어요. 새로운 사업을 하려면 정관을 먼저 바꿔야 합니다.</p>
+      <p>· 6개 사업 모두 정관 제28조에서 정한 범위 안에 있어요 → 문제없습니다.</p>
+      <p>· 법 제47조: 첫 회계연도(2026.12.31)가 끝나면, 그해 결산 보고서(얼마 벌고 얼마 썼는지 정리한 보고서)를 총회에서 승인 받고 경기도에 제출해야 해요.</p>
+      <p>· <b>통신판매업 신고 필요</b>: 온라인으로 물건이나 자료를 팔기 전에, 관할 시청·군청에 '통신판매업자' 등록을 해야 합니다. (전자상거래소비자보호법 제12조)</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제45조(사업), 제47조(결산보고서) / 전자상거래소비자보호법 제12조 — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'사업계획서::제6사업')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'사업계획서::제6사업')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc7 -->
+
+<!-- ========== ⑧ 수입지출예산서 ========== -->
+<div id="pane-doc8" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑧ 수입지출예산서</h2>
+  <p class="doc-subtitle">협동조합기본법 시행규칙 [별지 제5호서식] &lt;개정 2020. 9. 29.&gt;</p>
+  <div class="doc-meta"><span>회계연도: 2026. 8. 15 ~ 2026. 12. 31</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>설립 첫 회계연도(2026.8.15~12.31)의 수입·지출 예상액을 기재합니다. 예산 금액은 발기인 협의 후 확정합니다. 별지 제5호서식 작성방법에 따라 조합명·주소·출자금은 반드시 기재합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">수입지출예산서 본문</div></div>
+  <div class="article" data-article="수입지출예산서::수입">
+    <div class="article-header">
+      <span class="article-num">수입</span>
+      <div class="article-body">
+        <div class="article-title">수입 예산 (2026년도 제1기 회계연도)</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><td colspan="3" class="form-section-header">조합 기본 정보</td></tr>
+            <tr><th>조합 명칭</th><td colspan="2"><span class="confirmed-val">ADLER MIND 협동조합</span></td></tr>
+            <tr><th>소재지</th><td colspan="2"><span class="confirmed-val">경기도 광주시 남종면 산수로 1652-16</span></td></tr>
+            <tr><th>출자금 총액</th><td colspan="2"><span class="need-check">확인 필요 — 출자좌수 확정 후 (1좌=100,000원)</span></td></tr>
+            <tr><td colspan="3" class="form-section-header">수입 예산 내역</td></tr>
+            <tr><th style="width:35%">항목</th><th style="width:35%">내역</th><th>금액 (원)</th></tr>
+            <tr><td>출자금</td><td>발기인 출자금 납입 총액</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td rowspan="3">사업 수입</td><td>심리상담 수입</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>교육·연수 수입</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>콘텐츠·기타 수입</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr style="background:var(--cream);"><td colspan="2" style="font-weight:bold;">수입 합계</td><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'수입지출예산서::수입')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'수입지출예산서::수입')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="수입지출예산서::지출">
+    <div class="article-header">
+      <span class="article-num">지출</span>
+      <div class="article-body">
+        <div class="article-title">지출 예산 (2026년도 제1기 회계연도)</div>
+        <div class="article-content">
+          <table class="official-form">
+            <tr><th style="width:35%">항목</th><th style="width:35%">내역</th><th>금액 (원)</th></tr>
+            <tr><td rowspan="4">경상비 (운영비)</td><td>사무용품·비품</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>통신비 (웹호스팅, 도메인 등)</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>여비·교통비</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>공간 관리비</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td rowspan="3">사업비</td><td>심리상담 사업비</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>교육·연수 사업비</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>콘텐츠 제작비</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr><td>설립 경비</td><td>창립총회 준비, 서류 발급 등</td><td><span class="need-check">확인 필요</span></td></tr>
+            <tr style="background:var(--cream);"><td colspan="2" style="font-weight:bold;">지출 합계</td><td><span class="need-check">확인 필요</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">금액 확정 필요</span></div>
+      <p>· 법 제49조제1항: 예산서는 창립총회에서 사업계획서와 함께 발기인 전원이 승인해야 해요.</p>
+      <p>· 시행규칙 별지 제5호서식: 조합명·소재지·출자금 총액은 반드시 기재해야 하는 필수 항목 → 조합명·소재지는 입력 완료. 출자금 총액은 확정 후 기재.</p>
+      <p>· 예산 편성 원칙: 수입 합계와 지출 합계를 맞춰야 해요. 수입이 남으면 그 돈(잉여금, 즉 이익금)은 별도로 적립해서 관리합니다.</p>
+      <p>· <b>첫 회계연도 주의</b>: 2026.8.15~12.31은 약 4.5개월이에요. 1년이 아니니 예산도 그에 맞게 작게 잡으면 됩니다.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제49조(결산 및 검사), 시행규칙 별지 제5호서식 — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'수입지출예산서::지출')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'수입지출예산서::지출')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc8 -->
+
+<!-- ========== ⑨ 임원 취임승낙서 ========== -->
+<div id="pane-doc9" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑨ 임원 취임승낙서</h2>
+  <p class="doc-subtitle">협동조합기본법 제22조 · 제35조 — 임원 취임 시 작성</p>
+  <div class="doc-meta"><span>이사장 1명</span><span>이사 2명</span><span>감사 1명</span><span>합계 4명</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>창립총회에서 임원으로 선출된 즉시 작성합니다. 총회 당일 인쇄하여 각자 서명하는 방식으로 준비하세요. 주민등록번호와 주소는 <span class="secure">보안</span> 처리되어 있으며 실제 서류에만 기입합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">임원별 취임승낙서</div></div>
+  <div class="article" data-article="임원취임승낙서::이사장">
+    <div class="article-header">
+      <span class="article-num">이사장</span>
+      <div class="article-body">
+        <div class="article-title">이경숙 취임승낙서</div>
+        <div class="article-content">
+          <div class="accept-card">
+            <h4>이사장 취임승낙서</h4>
+            <p style="text-align:center; font-size:13px; line-height:1.9; margin-bottom:16px;">본인은 ADLER MIND 협동조합의 <b>이사장</b>으로 선출됨에 있어 이를 승낙합니다.</p>
+            <table class="accept-tbl">
+              <tr><td>성 명</td><td><b>이경숙</b></td></tr>
+              <tr><td>주민등록번호</td><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+              <tr><td>주 소</td><td><span class="need-check">확인 필요</span></td></tr>
+            </table>
+            <div class="accept-sign">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일<br><br>이사장 이경숙 &nbsp;&nbsp;&nbsp; (서명 또는 인)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'임원취임승낙서::이사장')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'임원취임승낙서::이사장')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="임원취임승낙서::이사1">
+    <div class="article-header">
+      <span class="article-num">이사①</span>
+      <div class="article-body">
+        <div class="article-title">고미경 취임승낙서</div>
+        <div class="article-content">
+          <div class="accept-card">
+            <h4>이사 취임승낙서</h4>
+            <p style="text-align:center; font-size:13px; line-height:1.9; margin-bottom:16px;">본인은 ADLER MIND 협동조합의 <b>이사</b>로 선출됨에 있어 이를 승낙합니다.</p>
+            <table class="accept-tbl">
+              <tr><td>성 명</td><td><b>고미경</b></td></tr>
+              <tr><td>주민등록번호</td><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+              <tr><td>주 소</td><td><span class="need-check">확인 필요</span></td></tr>
+            </table>
+            <div class="accept-sign">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일<br><br>이사 고미경 &nbsp;&nbsp;&nbsp; (서명 또는 인)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'임원취임승낙서::이사1')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'임원취임승낙서::이사1')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="임원취임승낙서::이사2">
+    <div class="article-header">
+      <span class="article-num">이사②</span>
+      <div class="article-body">
+        <div class="article-title">신옥선 취임승낙서</div>
+        <div class="article-content">
+          <div class="accept-card">
+            <h4>이사 취임승낙서</h4>
+            <p style="text-align:center; font-size:13px; line-height:1.9; margin-bottom:16px;">본인은 ADLER MIND 협동조합의 <b>이사</b>로 선출됨에 있어 이를 승낙합니다.</p>
+            <table class="accept-tbl">
+              <tr><td>성 명</td><td><b>신옥선</b></td></tr>
+              <tr><td>주민등록번호</td><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+              <tr><td>주 소</td><td><span class="need-check">확인 필요</span></td></tr>
+            </table>
+            <div class="accept-sign">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일<br><br>이사 신옥선 &nbsp;&nbsp;&nbsp; (서명 또는 인)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'임원취임승낙서::이사2')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'임원취임승낙서::이사2')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="임원취임승낙서::감사">
+    <div class="article-header">
+      <span class="article-num">감사</span>
+      <div class="article-body">
+        <div class="article-title">박정연 취임승낙서</div>
+        <div class="article-content">
+          <div class="accept-card">
+            <h4>감사 취임승낙서</h4>
+            <p style="text-align:center; font-size:13px; line-height:1.9; margin-bottom:16px;">본인은 ADLER MIND 협동조합의 <b>감사</b>로 선출됨에 있어 이를 승낙합니다.</p>
+            <table class="accept-tbl">
+              <tr><td>성 명</td><td><b>박정연</b></td></tr>
+              <tr><td>주민등록번호</td><td><span class="secure">보안 — 오프라인 기입</span></td></tr>
+              <tr><td>주 소</td><td><span class="need-check">확인 필요</span></td></tr>
+            </table>
+            <div class="accept-sign">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일<br><br>감사 박정연 &nbsp;&nbsp;&nbsp; (서명 또는 인)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-keep">적법</span></div>
+      <p>· 취임승낙서는 법으로 정해진 서식(법정 서식)은 아니에요. 하지만 경기도 협동조합 신고 시 임원명부와 함께 관행적으로 제출하는 서류입니다.</p>
+      <p>· 창립총회 당일, 임원으로 선출된 직후 바로 서명하는 방식이 일반적이에요. 총회 전에 미리 인쇄해 가시면 편합니다.</p>
+      <p>· 취임일(임원을 시작하는 날짜)은 창립총회 개최일과 같게 적으면 됩니다.</p>
+      <p>· 법 제36조: 서명 전에 임원 4명 각자가 '결격사유(임원이 될 수 없는 조건)에 해당하지 않는다'는 걸 스스로 확인해야 해요.</p>
+      <div class="ln-ref">참고법령 · 협동조합기본법 제22조, 제35조(임원의 수), 제36조(결격사유) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'임원취임승낙서::감사')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'임원취임승낙서::감사')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc9 -->
+
+<!-- ========== ⑩ 개인정보 제공 및 활용 동의서 ========== -->
+<div id="pane-doc10" class="tab-pane">
+<div class="doc-hero">
+  <h2>⑩ 개인정보 제공 및 활용 동의서</h2>
+  <p class="doc-subtitle">개인정보보호법 제15조 · 제22조 기반 표준 동의서</p>
+  <div class="doc-meta"><span>조합원 가입 시 필수 서명</span></div>
+</div>
+<div class="container">
+  <div class="doc-guide"><b>📋 서류 작성 안내</b>조합원 가입 신청 시 수집하는 개인정보에 대한 동의서입니다. 개인정보보호법에 따라 수집 항목·목적·보유기간을 명시하여야 합니다. 필수 항목과 선택 항목을 구분하여 별도 동의를 받아야 합니다.</div>
+
+  <div class="chapter"><div class="chapter-title">개인정보 동의서 본문</div></div>
+  <div class="article" data-article="개인정보동의서::필수">
+    <div class="article-header">
+      <span class="article-num">필수 동의</span>
+      <div class="article-body">
+        <div class="article-title">개인정보 수집·이용 동의 (필수)</div>
+        <div class="article-content">
+          <p style="font-size:13px; line-height:1.8; margin-bottom:12px;">ADLER MIND 협동조합은 조합원 관리 및 사업 운영을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
+          <div class="priv-section">
+            <h4>필수 수집 항목</h4>
+            <table class="priv-table">
+              <tr><th>항목</th><th>수집 목적</th><th>보유 기간</th></tr>
+              <tr><td>성명, 주민등록번호</td><td>조합원 신원 확인, 임원 선출, 법정 서류 작성</td><td>탈퇴 후 5년</td></tr>
+              <tr><td>주소, 연락처(전화·이메일)</td><td>조합원 연락 및 안내문 발송</td><td>탈퇴 후 3년</td></tr>
+              <tr><td>출자좌수·출자금액</td><td>출자금 관리 및 배당 처리</td><td>탈퇴 후 5년</td></tr>
+            </table>
+          </div>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 위 항목에 대한 동의를 거부하실 수 있으나, 거부 시 조합원 가입이 불가합니다.</p>
+          <div style="margin-top:16px; padding:12px 16px; border:1px solid var(--border); border-radius:8px; background:white;">
+            <p style="font-size:13px;">위 개인정보 수집·이용에 동의하십니까?</p>
+            <p style="margin-top:8px; font-size:13px;">[ ] 동의함 &nbsp;&nbsp;&nbsp; [ ] 동의하지 않음</p>
+            <p style="margin-top:12px; font-size:12px; text-align:right; color:var(--muted);">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일 &nbsp;&nbsp; 서명: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (인)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'개인정보동의서::필수')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'개인정보동의서::필수')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+
+  <div class="article" data-article="개인정보동의서::선택">
+    <div class="article-header">
+      <span class="article-num">선택 동의</span>
+      <div class="article-body">
+        <div class="article-title">개인정보 수집·이용 동의 (선택)</div>
+        <div class="article-content">
+          <div class="priv-section">
+            <h4>선택 수집 항목</h4>
+            <table class="priv-table">
+              <tr><th>항목</th><th>수집 목적</th><th>보유 기간</th></tr>
+              <tr><td>직업, 소속 기관</td><td>조합원 역할 배분 및 프로그램 매칭</td><td>탈퇴 후 1년</td></tr>
+              <tr><td>상담 전공·자격증</td><td>사업 연계 및 역량 파악</td><td>탈퇴 후 1년</td></tr>
+              <tr><td>뉴스레터 수신 동의</td><td>조합 소식 및 교육 정보 제공</td><td>동의 철회 시까지</td></tr>
+            </table>
+          </div>
+          <p style="font-size:12px; color:var(--muted); margin-top:8px;">※ 위 항목에 대한 동의를 거부하셔도 조합원 가입에 불이익이 없습니다.</p>
+          <div style="margin-top:16px; padding:12px 16px; border:1px solid var(--border); border-radius:8px; background:white;">
+            <p style="font-size:13px;">위 개인정보 수집·이용에 동의하십니까?</p>
+            <p style="margin-top:8px; font-size:13px;">[ ] 동의함 &nbsp;&nbsp;&nbsp; [ ] 동의하지 않음</p>
+            <p style="margin-top:12px; font-size:12px; text-align:right; color:var(--muted);">2026년 &nbsp;&nbsp; 월 &nbsp;&nbsp; 일 &nbsp;&nbsp; 서명: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; (인)</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="legal-note">
+      <div class="ln-title">▣ 법적 검토 결과 <span class="tag-mod">개인정보처리방침 별도 수립 권고</span></div>
+      <p>· 개인정보보호법 제15조: 개인정보를 모을 때는 ① 왜 모으는지, ② 무엇을 모으는지, ③ 얼마나 보관하는지를 알려주고 동의를 받아야 해요 → 이 동의서에 모두 명시 완료</p>
+      <p>· 개인정보보호법 제22조: '꼭 필요한 정보(필수)'와 '있으면 좋은 정보(선택)'를 반드시 나눠서 따로따로 동의를 받아야 해요 → 구분 완료</p>
+      <p>· <b>개인정보처리방침 작성 권고 (법 제30조)</b>: 조합 홈페이지나 안내문에 '우리 조합은 어떤 개인정보를 어떻게 관리합니다'라는 내용을 공개해야 해요. 나중에 홈페이지 만들 때 꼭 추가해 주세요.</p>
+      <p>· <b>주민등록번호 보관 주의 (법 제29조)</b>: 주민등록번호는 협동조합기본법 서식에 따라 수집하는 것이라 적법하지만, 파일로 보관할 때는 암호화(잠금 처리)를 해두는 게 안전해요.</p>
+      <p>· 개인정보 관련 문제 발생 시 → 개인정보보호위원회 (privacy.go.kr)</p>
+      <div class="ln-ref">참고법령 · 개인정보보호법 제15조(수집·이용), 제22조(동의방법), 제29조(안전조치), 제30조(처리방침) — law.go.kr</div>
+    </div>
+    <div class="comment-section">
+      <button class="comment-toggle" onclick="toggleForm(this,'개인정보동의서::선택')">의견 달기<span class="count-badge">로딩중</span></button>
+      <div class="comment-form"><div class="type-btns"><button class="type-btn" onclick="selectType(this,'동의')">동의</button><button class="type-btn" onclick="selectType(this,'수정의견')">수정의견</button><button class="type-btn" onclick="selectType(this,'질문')">질문</button></div><textarea class="comment-input" placeholder="의견을 작성해주세요..."></textarea><div class="submit-row"><button class="btn-cancel" onclick="closeForm(this)">취소</button><button class="btn-submit" onclick="submitComment(this,'개인정보동의서::선택')">제출</button></div></div>
+      <div class="comments-list"></div>
+    </div>
+  </div>
+</div>
+</div><!-- /pane-doc10 -->
+
+<!-- ========== 제출용 서식 ========== -->
+<div id="pane-print" class="tab-pane">
+<div class="container" style="max-width:800px;">
+  <div class="doc-hero">
+    <h2>제출용 서식</h2>
+    <p class="doc-subtitle">협동조합기본법 시행규칙 별지 서식 및 표준 서류 — 인쇄 후 빈 칸을 직접 기재하여 제출하십시오.</p>
+  </div>
+</div>
+<div class="print-action no-print">
+  <button class="btn-print" onclick="window.print()">전체 인쇄 / PDF 저장 (Ctrl+P)</button>
+  <p style="font-size:12px; color:var(--muted); margin-top:8px;">브라우저 인쇄 대화상자에서 "PDF로 저장"을 선택하시면 PDF 파일로 저장됩니다.</p>
+</div>
+<div class="print-wrap">
+
+<!-- ■ 서식 1 : 설립신고서 (별지 제2호서식, 협동조합기본법 시행규칙 <개정 2020. 9. 29.>) -->
+<div class="print-page">
+  <p style="font-size:9.5px; font-weight:bold; margin:0 0 5px; text-align:left;">■ 협동조합 기본법 시행규칙 [별지 제2호서식] &lt;개정 2020. 9. 29.&gt;</p>
+
+  <!-- 제목 -->
+  <table style="width:100%; border-collapse:collapse; border:none; margin-bottom:2px;">
+    <tr>
+      <td style="border:none; width:52%; font-size:13.5px; font-weight:bold; vertical-align:middle; line-height:2; padding:0;">
+        [ &nbsp;&nbsp;&nbsp; ] 협동조합<br>[ &nbsp;&nbsp;&nbsp; ] 협동조합연합회
+      </td>
+      <td style="border:none; text-align:center; vertical-align:middle; font-size:21px; font-weight:bold; letter-spacing:5px; padding:0;">설 립 신 고 서</td>
+    </tr>
+  </table>
+  <p style="font-size:9.5px; color:#333; margin:2px 0 5px;">※ 첨부서류를 확인하시기 바라며, 색상이 어두운 칸은 신고인이 작성하지 않습니다.</p>
+
+  <!-- 본체 표 (7컬럼 구조) -->
+  <table style="width:100%; border-collapse:collapse; font-size:10.5px; line-height:1.45;">
+    <colgroup>
+      <col style="width:8%">  <!-- 구분 -->
+      <col style="width:14%"> <!-- 항목1 -->
+      <col style="width:15%"> <!-- 값1 -->
+      <col style="width:18%"> <!-- 항목2 -->
+      <col style="width:13%"> <!-- 값2 -->
+      <col style="width:18%"> <!-- 항목3 -->
+      <col style="width:14%"> <!-- 값3 -->
+    </colgroup>
+
+    <!-- 접수번호 -->
+    <tr>
+      <td colspan="2" style="border:1px solid #555; background:#c8c8c8; text-align:center; padding:4px 6px; font-weight:bold;">접수번호</td>
+      <td style="border:1px solid #555; padding:4px 6px;"></td>
+      <td style="border:1px solid #555; background:#c8c8c8; text-align:center; padding:4px 6px; font-weight:bold;">접수일</td>
+      <td style="border:1px solid #555; padding:4px 6px;"></td>
+      <td style="border:1px solid #555; background:#c8c8c8; text-align:center; padding:4px 6px; font-weight:bold;">처리기간</td>
+      <td style="border:1px solid #555; text-align:center; padding:4px 6px;">20일</td>
+    </tr>
+
+    <!-- 설립신고인 행1: 성명/생년월일 -->
+    <tr>
+      <td rowspan="2" style="border:1px solid #555; background:#d8d8d8; text-align:center; padding:4px; font-weight:bold; writing-mode:vertical-rl; letter-spacing:3px; font-size:10px;">설립신고인</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">성명(법인명)</td>
+      <td style="border:1px solid #555; padding:4px 6px;">이경숙</td>
+      <td colspan="2" style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">생년월일(법인등록번호)</td>
+      <td colspan="2" style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+    <!-- 설립신고인 행2: 주소/전화번호 -->
+    <tr>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">주소</td>
+      <td colspan="3" style="border:1px solid #555; padding:4px 6px; height:26px;"></td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">전화번호</td>
+      <td style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+
+    <!-- 신고내용: 설립동의자 수 / 출자금 / 창립총회 개최일 -->
+    <tr>
+      <td style="border:1px solid #555; background:#d8d8d8; text-align:center; padding:4px; font-weight:bold; writing-mode:vertical-rl; letter-spacing:3px; font-size:10px;">신고내용</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">설립동의자 수(명)</td>
+      <td style="border:1px solid #555; padding:4px 6px; text-align:center;">5</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">출자금 납입총액(원)</td>
+      <td style="border:1px solid #555; padding:4px 6px; text-align:right;">500,000</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">창립총회 개최일</td>
+      <td style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+
+    <!-- 법인 행1: 조합명/전화번호 -->
+    <tr>
+      <td rowspan="7" style="border:1px solid #555; background:#d8d8d8; text-align:center; padding:4px; font-weight:bold; writing-mode:vertical-rl; letter-spacing:4px; font-size:10px;">법&nbsp;&nbsp;&nbsp;&nbsp;인</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">조합명(연합회명)</td>
+      <td colspan="2" style="border:1px solid #555; padding:4px 6px;">ADLER MIND 협동조합</td>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">전화번호</td>
+      <td colspan="2" style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+    <!-- 법인 행2: 소재지 -->
+    <tr>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">소재지</td>
+      <td colspan="5" style="border:1px solid #555; padding:4px 6px;">경기도 광주시 남종면 산수로 1652-16</td>
+    </tr>
+    <!-- 법인 행3: 이사장/주민등록번호 -->
+    <tr>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">이사장(회장) 성명(법인명)</td>
+      <td style="border:1px solid #555; padding:4px 6px;">이경숙</td>
+      <td colspan="2" style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">주민등록번호(법인등록번호)</td>
+      <td colspan="2" style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+    <!-- 법인 행4: 전화번호/이메일 -->
+    <tr>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">전화번호</td>
+      <td style="border:1px solid #555; padding:4px 6px;"></td>
+      <td colspan="2" style="border:1px solid #555; background:#e4e4e4; padding:4px 6px; font-size:10px;">전자우편주소</td>
+      <td colspan="2" style="border:1px solid #555; padding:4px 6px;"></td>
+    </tr>
+    <!-- 법인 행5: 주소 -->
+    <tr>
+      <td style="border:1px solid #555; background:#e4e4e4; padding:4px 6px;">주소</td>
+      <td colspan="5" style="border:1px solid #555; padding:4px 6px; height:26px;"></td>
+    </tr>
+    <!-- 법인 행6: 임원 결격 여부 -->
+    <tr>
+      <td colspan="4" style="border:1px solid #555; background:#e4e4e4; padding:4px 8px; font-size:10px; line-height:1.6;">협동조합(연합회) 임원의 「협동조합 기본법」 제36조제1항 각 호 해당 여부</td>
+      <td style="border:1px solid #555; text-align:center; padding:4px; font-size:10px;">해당 [&nbsp;&nbsp;&nbsp;]</td>
+      <td style="border:1px solid #555; text-align:center; padding:4px; font-size:10px; white-space:nowrap;">해당되지 않음 [&nbsp;&nbsp;&nbsp;]</td>
+    </tr>
+    <!-- 법인 행7: 이사장 겸직 여부 -->
+    <tr>
+      <td colspan="4" style="border:1px solid #555; background:#e4e4e4; padding:4px 8px; font-size:10px; line-height:1.6;">협동조합(연합회) 이사장의 「협동조합 기본법」 제44조제1항에 따른 겸직 여부</td>
+      <td style="border:1px solid #555; text-align:center; padding:4px; font-size:10px;">해당 [&nbsp;&nbsp;&nbsp;]</td>
+      <td style="border:1px solid #555; text-align:center; padding:4px; font-size:10px; white-space:nowrap;">해당되지 않음 [&nbsp;&nbsp;&nbsp;]</td>
+    </tr>
+  </table>
+
+  <!-- 신고 문안 -->
+  <p style="margin:10px 0 4px; font-size:10.5px; line-height:1.7; text-align:center;">「협동조합 기본법」 제15조제1항 전단 또는 제71조제1항 전단에 따라 위와 같이 설립하였음을 신고합니다.</p>
+
+  <!-- 서명란 -->
+  <table style="width:100%; border-collapse:collapse; border:none; font-size:10.5px; margin:6px 0 4px;">
+    <tr>
+      <td style="border:none; width:40%; padding:2px 0;">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일
+      </td>
+      <td style="border:none; text-align:right; padding:2px 0;">
+        신고인&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)
+      </td>
+    </tr>
+  </table>
+  <p style="font-size:11px; font-weight:bold; margin:6px 0 10px;">기획재정부장관 또는 시 · 도지사 귀하</p>
+
+  <hr style="border:none; border-top:1.5px solid #555; margin:8px 0;">
+
+  <!-- 첨부서류 -->
+  <table style="width:100%; border-collapse:collapse; font-size:10px;">
+    <tr>
+      <td rowspan="9" style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:4px 2px; font-weight:bold; writing-mode:vertical-rl; letter-spacing:3px; width:5%;">첨부서류</td>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; width:4%; padding:3px;">1.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">정관 사본 1부</td>
+      <td rowspan="9" style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:4px 2px; font-weight:bold; white-space:nowrap; width:6%;">수수료<br>없음</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">2.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">창립총회 개최 공고를 증명하는 서류 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">3.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">창립총회 의사록 사본 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">4.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">임원 명부 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">5.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">사업계획서 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">6.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">수입 · 지출 예산서 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">7.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">출자 1좌당 금액과 조합원별 출자좌수를 적은 서류 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">8.</td>
+      <td style="border:1px solid #666; padding:3px 6px;">발기인 및 설립동의자(또는 설립에 동의한 협동조합) 명부 1부</td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #666; background:#e4e4e4; text-align:center; padding:3px;">9.</td>
+      <td style="border:1px solid #666; padding:3px 6px; font-size:9.5px;">협동조합을 분할하거나 합병 또는 분할로 인해 설립되는 경우에 해당하며, 합병 또는 분할로 인해 존속하거나 설립되는 협동조합이 승계해야 할 권리·의무의 범위가 의결사항으로 적혀 있어야 합니다. 해당되는 경우에만 제출 — 합병·분할 의사록 사본 1부</td>
+    </tr>
+  </table>
+
+  <!-- 처리절차 -->
+  <p style="font-size:10px; font-weight:bold; text-align:center; background:#d8d8d8; border:1px solid #888; padding:3px; margin-top:8px; margin-bottom:0;">처 리 절 차</p>
+  <table style="width:100%; border-collapse:collapse; font-size:9.5px; text-align:center; border:1px solid #888; border-top:none;">
+    <tr>
+      <td style="border-right:1px solid #888; padding:6px 2px; background:#f4f4f4; width:18%;">설립신고서 작성</td>
+      <td style="padding:2px 1px; width:4%; font-size:12px;">&#8594;</td>
+      <td style="border-right:1px solid #888; padding:6px 2px; background:#f4f4f4; width:16%;">접&nbsp;&nbsp;&nbsp;수</td>
+      <td style="padding:2px 1px; width:4%; font-size:12px;">&#8594;</td>
+      <td style="border-right:1px solid #888; padding:6px 2px; background:#f4f4f4; width:18%;">서류 확인 및 검토</td>
+      <td style="padding:2px 1px; width:4%; font-size:12px;">&#8594;</td>
+      <td style="border-right:1px solid #888; padding:6px 2px; background:#f4f4f4; width:16%;">결&nbsp;&nbsp;&nbsp;재</td>
+      <td style="padding:2px 1px; width:4%; font-size:12px;">&#8594;</td>
+      <td style="padding:6px 2px; background:#f4f4f4; width:20%;">신고확인증 교부</td>
+    </tr>
+    <tr>
+      <td style="border-right:1px solid #888; padding:2px; font-size:9px; border-top:1px solid #bbb;">신고인</td>
+      <td style="border-top:1px solid #bbb;"></td>
+      <td colspan="5" style="border-right:1px solid #888; padding:2px; font-size:9px; border-top:1px solid #bbb;">처리기관 (기획재정부장관 또는 시 · 도지사)</td>
+      <td style="border-top:1px solid #bbb;"></td>
+      <td style="padding:2px; font-size:9px; border-top:1px solid #bbb;">처리기관</td>
+    </tr>
+  </table>
+  <p style="font-size:8.5px; text-align:right; margin:4px 0 0; color:#555;">210mm×297mm[백상지 80g/㎡]</p>
+</div>
+
+<!-- ■ 서식 2 : 창립총회 공고문 -->
+<div class="print-page">
+  <p class="pf-title" style="letter-spacing:2px;">창 립 총 회 개 최 공 고</p>
+  <p style="text-align:center; margin-bottom:24px; font-size:11px; color:#555;">협동조합기본법 제13조제2항에 따른 창립총회 개최 공고</p>
+  <p style="line-height:2;">ADLER MIND 협동조합의 창립을 위하여 아래와 같이 창립총회를 개최하오니, 발기인께서는 참석하여 주시기 바랍니다.</p>
+  <br>
+  <table class="pf-tbl" style="margin:16px 0;">
+    <tr><td class="lbl" style="width:20%;">일&nbsp;&nbsp;시</td><td></td></tr>
+    <tr><td class="lbl">장&nbsp;&nbsp;소</td><td>경기도 광주시 남종면 산수로 1652-16</td></tr>
+    <tr><td class="lbl">안&nbsp;&nbsp;건</td><td>
+      <p style="margin-bottom:4px;">제1호 의안: 정관 심의·의결</p>
+      <p style="margin-bottom:4px;">제2호 의안: 사업계획서 및 수입·지출 예산서 심의·의결</p>
+      <p style="margin-bottom:4px;">제3호 의안: 임원 선출</p>
+      <p>제4호 의안: 출자금 납입 확인 및 기타사항</p>
+    </td></tr>
+  </table>
+  <div class="pf-sign">
+    <p style="margin-bottom:24px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>ADLER MIND 협동조합 설립 발기인 일동</p>
+  </div>
+</div>
+
+<!-- ■ 서식 3 : 창립총회 의사록 -->
+<div class="print-page">
+  <p class="pf-title">창 립 총 회 의 사 록</p>
+  <br>
+  <table class="pf-tbl" style="margin-bottom:16px;">
+    <tr><td class="lbl" style="width:20%;">일&nbsp;&nbsp;시</td><td></td></tr>
+    <tr><td class="lbl">장&nbsp;&nbsp;소</td><td>경기도 광주시 남종면 산수로 1652-16</td></tr>
+    <tr><td class="lbl">재적 발기인</td><td>5명</td></tr>
+    <tr><td class="lbl">출석 발기인</td><td>&nbsp;&nbsp;&nbsp;&nbsp;명</td></tr>
+    <tr><td class="lbl">의&nbsp;&nbsp;장</td><td>이경숙</td></tr>
+  </table>
+  <p class="pf-section">1. 개회 선언</p>
+  <p>의장이 출석 인원을 확인하고 정족수가 충족됨을 선언한 후, 창립총회의 개회를 선언하였다.</p>
+  <p class="pf-section">2. 제1호 의안 — 정관 심의·의결</p>
+  <p>의장은 정관(안)을 설명하고 심의에 부쳤다. 의결 결과: 찬성&nbsp;&nbsp;&nbsp;&nbsp;명, 반대&nbsp;&nbsp;&nbsp;&nbsp;명, 기권&nbsp;&nbsp;&nbsp;&nbsp;명</p>
+  <p style="margin-top:4px;">→ <b>원안 가결</b></p>
+  <p class="pf-section">3. 제2호 의안 — 사업계획서 및 수입·지출 예산서 심의·의결</p>
+  <p>의장은 사업계획서와 수입·지출 예산서(안)을 설명하고 심의에 부쳤다. 의결 결과: 찬성&nbsp;&nbsp;&nbsp;&nbsp;명, 반대&nbsp;&nbsp;&nbsp;&nbsp;명, 기권&nbsp;&nbsp;&nbsp;&nbsp;명</p>
+  <p style="margin-top:4px;">→ <b>원안 가결</b></p>
+  <p class="pf-section">4. 제3호 의안 — 임원 선출</p>
+  <p>호선(이사들이 互選)으로 임원을 선출하였다.</p>
+  <table class="pf-tbl" style="margin:8px 0;">
+    <tr><th style="width:20%;">직책</th><th style="width:30%;">성명</th><th>의결 결과</th></tr>
+    <tr><td class="lbl">이사장</td><td>이경숙</td><td>찬성&nbsp;&nbsp;&nbsp;&nbsp;명 / 반대&nbsp;&nbsp;&nbsp;&nbsp;명</td></tr>
+    <tr><td class="lbl">이사</td><td>고미경</td><td>찬성&nbsp;&nbsp;&nbsp;&nbsp;명 / 반대&nbsp;&nbsp;&nbsp;&nbsp;명</td></tr>
+    <tr><td class="lbl">이사</td><td>신옥선</td><td>찬성&nbsp;&nbsp;&nbsp;&nbsp;명 / 반대&nbsp;&nbsp;&nbsp;&nbsp;명</td></tr>
+    <tr><td class="lbl">감사</td><td>박정연</td><td>찬성&nbsp;&nbsp;&nbsp;&nbsp;명 / 반대&nbsp;&nbsp;&nbsp;&nbsp;명</td></tr>
+  </table>
+  <p class="pf-section">5. 제4호 의안 — 출자금 납입 확인 및 기타사항</p>
+  <p>조합원 5명 각 1좌(금 100,000원), 총 5좌, 출자금 총액 금 500,000원의 납입을 확인하였다.</p>
+  <p class="pf-section">6. 폐회 선언</p>
+  <p>모든 안건의 심의와 의결이 완료되어 폐회를 선언하였다.</p>
+  <br>
+  <p>위 의사록이 사실과 다름없음을 증명하기 위하여 의장과 출석 발기인 전원이 서명날인합니다.</p>
+  <div class="pf-sign" style="line-height:2.8;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>의장(이사장)&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(인)</p>
+    <p>이사&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;고미경&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(인)</p>
+    <p>이사&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;신옥선&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(인)</p>
+    <p>감사&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;박정연&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(인)</p>
+    <p>발기인 대표&nbsp;&nbsp;&nbsp;&nbsp;김이수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 4 : 임원명부 (별지 제3호서식) -->
+<div class="print-page">
+  <p class="pf-form-num">■ 협동조합 기본법 시행규칙 [별지 제3호서식]</p>
+  <p class="pf-title">임 원 명 부</p>
+  <table class="pf-tbl" style="margin:10px 0 16px;">
+    <tr><td class="lbl" style="width:20%;">협동조합 명칭</td><td colspan="3">ADLER MIND 협동조합</td></tr>
+  </table>
+  <table class="pf-tbl">
+    <tr>
+      <th style="width:6%;">번호</th>
+      <th style="width:14%;">직책</th>
+      <th style="width:14%;">성명</th>
+      <th style="width:18%;">생년월일</th>
+      <th>주소</th>
+      <th style="width:16%;">임기만료일</th>
+      <th style="width:8%;">비고</th>
+    </tr>
+    <tr><td style="text-align:center;">1</td><td>이사장</td><td>이경숙</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">2</td><td>이사</td><td>고미경</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">3</td><td>이사</td><td>신옥선</td><td></td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">4</td><td>감사</td><td>박정연</td><td></td><td></td><td></td><td></td></tr>
+  </table>
+  <p class="pf-note" style="margin-top:10px;">※ 생년월일은 주민등록증 등 신분증을 확인하여 기재합니다.</p>
+  <div class="pf-sign" style="margin-top:40px; line-height:2.5;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>ADLER MIND 협동조합</p>
+    <p>이사장&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 5 : 발기인·설립동의자 명부 -->
+<div class="print-page">
+  <p class="pf-title">발기인 · 설립동의자 명부</p>
+  <table class="pf-tbl" style="margin:10px 0 16px;">
+    <tr><td class="lbl" style="width:20%;">협동조합 명칭</td><td>ADLER MIND 협동조합</td></tr>
+  </table>
+  <table class="pf-tbl">
+    <tr>
+      <th style="width:8%;">번호</th>
+      <th style="width:15%;">성명</th>
+      <th style="width:20%;">생년월일</th>
+      <th>주소</th>
+      <th style="width:20%;">서명 또는 날인</th>
+    </tr>
+    <tr><td style="text-align:center;">1</td><td>이경숙</td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">2</td><td>고미경</td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">3</td><td>신옥선</td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">4</td><td>박정연</td><td></td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">5</td><td>김이수</td><td></td><td></td><td></td></tr>
+  </table>
+  <p class="pf-note" style="margin-top:10px;">※ 협동조합기본법 제13조제1항에 따라 5인 이상의 발기인이 서명 또는 날인하여야 합니다.</p>
+  <div class="pf-sign" style="margin-top:40px; line-height:2.5;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>발기인 대표&nbsp;&nbsp;김이수&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 6 : 출자자명부 (별지 제4호서식) -->
+<div class="print-page">
+  <p class="pf-form-num">■ 협동조합 기본법 시행규칙 [별지 제4호서식]</p>
+  <p class="pf-title">출 자 자 명 부</p>
+  <table class="pf-tbl" style="margin:10px 0 4px;">
+    <tr>
+      <td class="lbl" style="width:20%;">협동조합 명칭</td><td>ADLER MIND 협동조합</td>
+    </tr>
+    <tr>
+      <td class="lbl">출자 1좌당 금액</td><td>금 100,000원 (일금 십만 원 정)</td>
+    </tr>
+  </table>
+  <table class="pf-tbl" style="margin-top:0; border-top:none;">
+    <tr>
+      <th style="width:8%;">번호</th>
+      <th style="width:15%;">성명</th>
+      <th style="width:22%;">생년월일</th>
+      <th>주소</th>
+      <th style="width:14%;">인수 출자좌수</th>
+      <th style="width:16%;">출자금액 (원)</th>
+    </tr>
+    <tr><td style="text-align:center;">1</td><td>이경숙</td><td></td><td></td><td style="text-align:center;">1좌</td><td style="text-align:right;">100,000</td></tr>
+    <tr><td style="text-align:center;">2</td><td>고미경</td><td></td><td></td><td style="text-align:center;">1좌</td><td style="text-align:right;">100,000</td></tr>
+    <tr><td style="text-align:center;">3</td><td>신옥선</td><td></td><td></td><td style="text-align:center;">1좌</td><td style="text-align:right;">100,000</td></tr>
+    <tr><td style="text-align:center;">4</td><td>박정연</td><td></td><td></td><td style="text-align:center;">1좌</td><td style="text-align:right;">100,000</td></tr>
+    <tr><td style="text-align:center;">5</td><td>김이수</td><td></td><td></td><td style="text-align:center;">1좌</td><td style="text-align:right;">100,000</td></tr>
+    <tr>
+      <td colspan="4" style="text-align:right; font-weight:bold;">합 계</td>
+      <td style="text-align:center; font-weight:bold;">5좌</td>
+      <td style="text-align:right; font-weight:bold;">500,000</td>
+    </tr>
+  </table>
+  <p class="pf-note" style="margin-top:10px;">※ 협동조합기본법 제22조제2항: 조합원 1인의 출자금은 총 출자금의 100분의 30을 초과해서는 안 됩니다.</p>
+  <div class="pf-sign" style="margin-top:40px; line-height:2.5;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>ADLER MIND 협동조합</p>
+    <p>이사장&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 7 : 사업계획서 (별지 제2호서식) -->
+<div class="print-page">
+  <p class="pf-form-num">■ 협동조합 기본법 시행규칙 [별지 제5호서식]</p>
+  <p class="pf-title">사 업 계 획 서</p>
+  <table class="pf-tbl" style="margin:10px 0 4px;">
+    <tr><td class="lbl" style="width:20%;">명칭</td><td>ADLER MIND 협동조합</td></tr>
+    <tr><td class="lbl">소재지</td><td>경기도 광주시 남종면 산수로 1652-16</td></tr>
+    <tr><td class="lbl">회계연도</td><td>2026년 8월 15일 ~ 2026년 12월 31일 (설립 첫 회계연도)</td></tr>
+  </table>
+  <p class="pf-section">사업 계획</p>
+  <table class="pf-tbl" style="margin-top:0;">
+    <tr>
+      <th style="width:6%;">구분</th>
+      <th>사업의 종류</th>
+      <th style="width:18%;">사업량 (목표)</th>
+      <th style="width:18%;">수입예정금액 (원)</th>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제1</td>
+      <td>아들러 개인심리학 기반 개인·집단 심리상담 서비스</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제2</td>
+      <td>심리상담 관련 교육·연수·강의 사업</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제3</td>
+      <td>심리상담 관련 콘텐츠 제작 및 출판 사업</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제4</td>
+      <td>상담사 양성 및 자격취득 지원 교육 사업</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제5</td>
+      <td>온라인 강의 및 디지털 교육 콘텐츠 제작·운영·판매</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">제6</td>
+      <td>전자상거래·통신판매</td>
+      <td></td><td></td>
+    </tr>
+    <tr>
+      <td colspan="2" style="text-align:right; font-weight:bold;">합 계</td>
+      <td></td><td></td>
+    </tr>
+  </table>
+  <p class="pf-section">조합원 관련 사항</p>
+  <table class="pf-tbl">
+    <tr><td class="lbl" style="width:20%;">조합원 수</td><td>5명</td><td class="lbl" style="width:20%;">출자금 총액</td><td>금 500,000원</td></tr>
+  </table>
+  <p class="pf-section">사업 목적</p>
+  <p style="padding:8px; border:1px solid #ccc; font-size:11px; line-height:1.7;">아들러 개인심리학(Individual Psychology)에 기반한 심리상담·교육·콘텐츠 서비스를 통해 조합원 및 지역사회의 심리적 건강과 공동체 감각(Gemeinschaftsgefühl)을 높인다.</p>
+  <div class="pf-sign" style="margin-top:32px; line-height:2.5;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>ADLER MIND 협동조합</p>
+    <p>이사장&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 8 : 수입지출예산서 (별지 제5호서식) -->
+<div class="print-page">
+  <p class="pf-form-num">■ 협동조합 기본법 시행규칙 [별지 제6호서식]</p>
+  <p class="pf-title">수 입 · 지 출 예 산 서</p>
+  <table class="pf-tbl" style="margin:10px 0 4px;">
+    <tr><td class="lbl" style="width:20%;">명칭</td><td>ADLER MIND 협동조합</td></tr>
+    <tr><td class="lbl">소재지</td><td>경기도 광주시 남종면 산수로 1652-16</td></tr>
+    <tr><td class="lbl">회계연도</td><td>2026년 8월 15일 ~ 2026년 12월 31일</td></tr>
+  </table>
+  <p class="pf-section">수입 예산</p>
+  <table class="pf-tbl">
+    <tr><th style="width:8%;">번호</th><th>수입 항목</th><th style="width:25%;">금액 (원)</th><th style="width:30%;">비고</th></tr>
+    <tr><td style="text-align:center;">1</td><td>조합원 출자금</td><td style="text-align:right;">500,000</td><td>5명 × 1좌 × 100,000원</td></tr>
+    <tr><td style="text-align:center;">2</td><td>심리상담 수입</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">3</td><td>교육·연수 수입</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">4</td><td>콘텐츠·출판 수입</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">5</td><td>온라인 강의 수입</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">6</td><td>잡수입</td><td></td><td></td></tr>
+    <tr><td colspan="2" style="text-align:right; font-weight:bold;">수입 합계</td><td></td><td></td></tr>
+  </table>
+  <p class="pf-section">지출 예산</p>
+  <table class="pf-tbl">
+    <tr><th style="width:8%;">번호</th><th>지출 항목</th><th style="width:25%;">금액 (원)</th><th style="width:30%;">비고</th></tr>
+    <tr><td style="text-align:center;">1</td><td>사업비 (프로그램 운영)</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">2</td><td>강사료</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">3</td><td>홍보비</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">4</td><td>운영비 (통신·소모품 등)</td><td></td><td></td></tr>
+    <tr><td style="text-align:center;">5</td><td>예비비</td><td></td><td></td></tr>
+    <tr><td colspan="2" style="text-align:right; font-weight:bold;">지출 합계</td><td></td><td></td></tr>
+  </table>
+  <div class="pf-sign" style="margin-top:32px; line-height:2.5;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>ADLER MIND 협동조합</p>
+    <p>이사장&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+</div>
+
+<!-- ■ 서식 9 : 임원 취임승낙서 (4명) -->
+<div class="print-page">
+  <p class="pf-title">임 원 취 임 승 낙 서</p>
+  <br>
+  <p style="line-height:2;">본인은 ADLER MIND 협동조합의 임원으로 선임됨에 있어 그 취임을 승낙합니다.</p>
+  <p style="margin-top:4px; font-size:10.5px; color:#555;">「협동조합기본법」 제36조에 따른 결격사유에 해당하지 않음을 확인합니다.</p>
+
+  <div style="margin-top:32px; padding:20px 24px; border:1px solid #333;">
+    <table class="pf-tbl" style="margin-bottom:0;">
+      <tr><td class="lbl" style="width:22%;">직책</td><td>이사장</td></tr>
+      <tr><td class="lbl">성명</td><td>이경숙</td></tr>
+      <tr><td class="lbl">생년월일</td><td></td></tr>
+      <tr><td class="lbl">주소</td><td style="height:36px;"></td></tr>
+    </table>
+    <div class="pf-sign" style="margin-top:20px; line-height:2.5;">
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+      <p>이사장&nbsp;&nbsp;이경숙&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+    </div>
+  </div>
+
+  <div style="margin-top:24px; padding:20px 24px; border:1px solid #333;">
+    <table class="pf-tbl" style="margin-bottom:0;">
+      <tr><td class="lbl" style="width:22%;">직책</td><td>이사</td></tr>
+      <tr><td class="lbl">성명</td><td>고미경</td></tr>
+      <tr><td class="lbl">생년월일</td><td></td></tr>
+      <tr><td class="lbl">주소</td><td style="height:36px;"></td></tr>
+    </table>
+    <div class="pf-sign" style="margin-top:20px; line-height:2.5;">
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+      <p>이사&nbsp;&nbsp;&nbsp;&nbsp;고미경&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+    </div>
+  </div>
+
+  <div style="margin-top:24px; padding:20px 24px; border:1px solid #333;">
+    <table class="pf-tbl" style="margin-bottom:0;">
+      <tr><td class="lbl" style="width:22%;">직책</td><td>이사</td></tr>
+      <tr><td class="lbl">성명</td><td>신옥선</td></tr>
+      <tr><td class="lbl">생년월일</td><td></td></tr>
+      <tr><td class="lbl">주소</td><td style="height:36px;"></td></tr>
+    </table>
+    <div class="pf-sign" style="margin-top:20px; line-height:2.5;">
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+      <p>이사&nbsp;&nbsp;&nbsp;&nbsp;신옥선&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+    </div>
+  </div>
+
+  <div style="margin-top:24px; padding:20px 24px; border:1px solid #333;">
+    <table class="pf-tbl" style="margin-bottom:0;">
+      <tr><td class="lbl" style="width:22%;">직책</td><td>감사</td></tr>
+      <tr><td class="lbl">성명</td><td>박정연</td></tr>
+      <tr><td class="lbl">생년월일</td><td></td></tr>
+      <tr><td class="lbl">주소</td><td style="height:36px;"></td></tr>
+    </table>
+    <div class="pf-sign" style="margin-top:20px; line-height:2.5;">
+      <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+      <p>감사&nbsp;&nbsp;&nbsp;&nbsp;박정연&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ■ 서식 10 : 개인정보 수집·이용 동의서 -->
+<div class="print-page">
+  <p class="pf-title">개인정보 수집 · 이용 동의서</p>
+  <p style="text-align:center; font-size:10.5px; color:#555; margin-bottom:20px;">개인정보 보호법 제15조에 따른 개인정보 수집·이용 동의</p>
+  <p class="pf-section">1. 필수 수집·이용 항목</p>
+  <table class="pf-tbl">
+    <tr><th style="width:25%;">수집 항목</th><th style="width:25%;">수집 목적</th><th style="width:20%;">보유 기간</th><th>근거</th></tr>
+    <tr>
+      <td>성명, 생년월일, 주소, 연락처, 출자금액</td>
+      <td>조합원 관리, 설립신고 서류 작성</td>
+      <td>조합원 탈퇴 후 5년</td>
+      <td>개인정보 보호법 제15조제1항제4호</td>
+    </tr>
+    <tr>
+      <td>주민등록번호</td>
+      <td>임원 취임승낙서 및 결격사유 확인</td>
+      <td>임기 종료 후 5년</td>
+      <td>협동조합기본법 제36조</td>
+    </tr>
+  </table>
+  <p style="margin-top:8px; font-size:10.5px; color:#555;">※ 위 필수 항목에 동의하지 않으실 경우 조합원 가입이 제한될 수 있습니다.</p>
+  <p class="pf-section">2. 선택 수집·이용 항목</p>
+  <table class="pf-tbl">
+    <tr><th style="width:25%;">수집 항목</th><th style="width:25%;">수집 목적</th><th style="width:20%;">보유 기간</th><th>근거</th></tr>
+    <tr>
+      <td>이메일, SNS 계정</td>
+      <td>뉴스레터 및 공지 발송</td>
+      <td>동의 철회 시까지</td>
+      <td>개인정보 보호법 제15조제1항제1호</td>
+    </tr>
+  </table>
+  <br>
+  <p>본인은 위와 같이 개인정보를 수집·이용하는 것에 동의합니다.</p>
+  <br>
+  <table class="pf-tbl">
+    <tr>
+      <td class="lbl" style="width:10%; text-align:center;">필수</td>
+      <td>동의함 □&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;동의하지 않음 □</td>
+    </tr>
+    <tr>
+      <td class="lbl" style="text-align:center;">선택</td>
+      <td>동의함 □&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;동의하지 않음 □</td>
+    </tr>
+  </table>
+  <div class="pf-sign" style="margin-top:40px; line-height:2.8;">
+    <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;년&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;월&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;일</p>
+    <p>성명&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(서명 또는 인)</p>
+  </div>
+  <p class="pf-to">ADLER MIND 협동조합 귀중</p>
+</div>
+
+</div><!-- /print-wrap -->
+</div><!-- /pane-print -->
 
 <div class="toast" id="toast"></div>
 
@@ -764,6 +2550,17 @@ async function loadAllComments() {
     renderComments(art.querySelector('.comments-list'), comments);
   });
   document.getElementById('totalCountBadge').textContent = `의견 ${all.length}개`;
+
+  // 탭 점 표시 업데이트
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const m = btn.getAttribute('onclick').match(/switchTab\('(\w+)'/);
+    if (!m) return;
+    const pane = document.getElementById('pane-' + m[1]);
+    if (!pane) return;
+    const hasComment = [...pane.querySelectorAll('.count-badge')]
+      .some(b => b.textContent !== '0' && b.textContent !== '로딩중');
+    btn.classList.toggle('has-comment', hasComment);
+  });
 }
 
 function renderComments(list, comments) {
@@ -997,6 +2794,49 @@ function approvalLabel(status) {
     ? IC.check + ' 동의완료'
     : IC.pause + ' 검토중';
 }
+
+// ── 안내문 팝업 ──────────────────────────────────────────────
+function closeNotice() {
+  const chk = document.getElementById('chk-no-show');
+  if (chk && chk.checked) {
+    const exp = Date.now() + 7 * 24 * 60 * 60 * 1000;
+    localStorage.setItem('notice_hide_until', exp);
+  }
+  document.getElementById('modal-notice').style.display = 'none';
+}
+
+(function initNoticePopup() {
+  const hideUntil = localStorage.getItem('notice_hide_until');
+  if (hideUntil && Date.now() < parseInt(hideUntil, 10)) return;
+  document.getElementById('modal-notice').style.display = 'flex';
+})();
+// ─────────────────────────────────────────────────────────────
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('pane-' + id).classList.add('active');
+  btn.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 법적 검토 접기 초기화
+document.querySelectorAll('.legal-note').forEach(note => {
+  const title = note.querySelector('.ln-title');
+  if (!title) return;
+  // 본문 요소들을 .ln-body로 감싸기
+  const body = document.createElement('div');
+  body.className = 'ln-body';
+  while (title.nextSibling) body.appendChild(title.nextSibling);
+  note.appendChild(body);
+  // 화살표 추가
+  const chevron = document.createElement('span');
+  chevron.className = 'ln-chevron';
+  chevron.textContent = '▾';
+  title.appendChild(chevron);
+  // 클릭 토글
+  title.addEventListener('click', () => note.classList.toggle('open'));
+});
 
 loadAllComments();
 loadApprovals();
