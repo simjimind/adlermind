@@ -145,6 +145,31 @@
 
     .reply-form-wrap { margin-top: 10px; padding-left: 16px; }
 
+    /* 수정·삭제 버튼 */
+    .action-btns { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-edit, .btn-delete {
+      background: none; border: none; font-size: 11.5px; cursor: pointer;
+      padding: 2px 6px; border-radius: 3px; font-family: inherit;
+    }
+    .btn-edit { color: #2c3e7a; border: 1px solid #c5cce8; }
+    .btn-edit:hover { background: #eef1fb; }
+    .btn-delete { color: #b03030; border: 1px solid #e8c5c5; }
+    .btn-delete:hover { background: #fdf0f0; }
+    .edit-form { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
+    .edit-form textarea {
+      font-family: inherit; font-size: 13px; border: 1px solid #c5cce8;
+      border-radius: 5px; padding: 8px 10px; width: 100%; min-height: 52px; resize: vertical;
+    }
+    .edit-form-btns { display: flex; gap: 6px; justify-content: flex-end; }
+    .btn-save, .btn-cancel {
+      font-family: inherit; font-size: 12px; padding: 5px 12px;
+      border-radius: 4px; cursor: pointer; border: none;
+    }
+    .btn-save { background: #2c3e7a; color: #fff; }
+    .btn-save:hover { background: #1a2c60; }
+    .btn-cancel { background: #eee; color: #555; }
+    .btn-cancel:hover { background: #ddd; }
+
     /* 빈 상태 */
     .no-comment { font-size: 13px; color: #bbb; margin-bottom: 12px; }
 
@@ -298,39 +323,26 @@
   const SB_URL = 'https://vxnjrznlfofxymcobsmg.supabase.co';
   const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ4bmpyem5sZm9meHltY29ic21nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNTIzOTgsImV4cCI6MjA5NTgyODM5OH0.UHu06FFxjhqISC1NaiayIjGCRGZ6ZaxM00Yu6xRH3KA';
   const TABLE = 'cooperation_comments';
+  const hdrs = { 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}`, 'Content-Type': 'application/json' };
 
-  const hdrs = {
-    'apikey': SB_KEY,
-    'Authorization': `Bearer ${SB_KEY}`,
-    'Content-Type': 'application/json'
-  };
-
-  // 카드별 댓글 캐시 { cardId: [rows] }
-  const cache = {};
-  // 댓글별 대댓글 펼침 상태 { commentId: bool }
-  const replyOpen = {};
+  const cache = {};       // { cardId: [rows] }
+  const replyOpen = {};   // { commentId: bool }
 
   function escHtml(s) {
     return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
-
   function fmtDate(iso) {
     const d = new Date(iso);
     return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
   }
 
-  // ---- Supabase 조회 ----
   async function fetchComments(cardId) {
-    const res = await fetch(
-      `${SB_URL}/rest/v1/${TABLE}?card_id=eq.${cardId}&order=created_at.asc`,
-      { headers: hdrs }
-    );
+    const res = await fetch(`${SB_URL}/rest/v1/${TABLE}?card_id=eq.${cardId}&order=created_at.asc`, { headers: hdrs });
     const rows = await res.json();
     cache[cardId] = Array.isArray(rows) ? rows : [];
     return cache[cardId];
   }
 
-  // ---- Supabase 삽입 ----
   async function insertComment(cardId, author, content, parentId = null) {
     const body = { card_id: cardId, author, content };
     if (parentId) body.parent_id = parentId;
@@ -341,7 +353,107 @@
     });
   }
 
-  // ---- 렌더 ----
+  async function updateComment(id, content) {
+    await fetch(`${SB_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+      method: 'PATCH',
+      headers: { ...hdrs, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ content })
+    });
+  }
+
+  async function deleteComment(id) {
+    await fetch(`${SB_URL}/rest/v1/${TABLE}?id=eq.${id}`, {
+      method: 'DELETE',
+      headers: hdrs
+    });
+  }
+
+  // ---- 댓글 아이템 생성 ----
+  function buildCommentItem(row, section, cardId, isReply = false) {
+    const item = document.createElement('div');
+    item.className = isReply ? 'reply-item' : 'comment-item';
+
+    const authorColor = isReply ? '#2a7a5a' : '#2c3e7a';
+    const metaEl = document.createElement('div');
+    metaEl.className = 'comment-meta';
+    metaEl.innerHTML = `<span class="comment-author" style="color:${authorColor}">${escHtml(row.author)}</span><span class="comment-date">${fmtDate(row.created_at)}</span>`;
+
+    const textEl = document.createElement('p');
+    textEl.className = 'comment-text';
+    textEl.textContent = row.content;
+
+    const actionBtns = document.createElement('div');
+    actionBtns.className = 'action-btns';
+
+    // 수정 버튼
+    const editBtn = document.createElement('button');
+    editBtn.className = 'btn-edit';
+    editBtn.textContent = '수정';
+    editBtn.addEventListener('click', () => {
+      // 수정 폼으로 전환
+      textEl.style.display = 'none';
+      actionBtns.style.display = 'none';
+
+      const editForm = document.createElement('div');
+      editForm.className = 'edit-form';
+
+      const ta = document.createElement('textarea');
+      ta.value = row.content;
+
+      const btnRow = document.createElement('div');
+      btnRow.className = 'edit-form-btns';
+
+      const saveBtn = document.createElement('button');
+      saveBtn.className = 'btn-save';
+      saveBtn.textContent = '저장';
+      saveBtn.addEventListener('click', async () => {
+        const newContent = ta.value.trim();
+        if (!newContent) return;
+        saveBtn.disabled = true;
+        saveBtn.textContent = '저장 중...';
+        await updateComment(row.id, newContent);
+        await fetchComments(cardId);
+        renderSection(section);
+      });
+
+      const cancelBtn = document.createElement('button');
+      cancelBtn.className = 'btn-cancel';
+      cancelBtn.textContent = '취소';
+      cancelBtn.addEventListener('click', () => {
+        textEl.style.display = '';
+        actionBtns.style.display = '';
+        editForm.remove();
+      });
+
+      btnRow.appendChild(cancelBtn);
+      btnRow.appendChild(saveBtn);
+      editForm.appendChild(ta);
+      editForm.appendChild(btnRow);
+      item.appendChild(editForm);
+    });
+
+    // 삭제 버튼
+    const delBtn = document.createElement('button');
+    delBtn.className = 'btn-delete';
+    delBtn.textContent = '삭제';
+    delBtn.addEventListener('click', async () => {
+      if (!confirm('삭제하시겠습니까?')) return;
+      delBtn.disabled = true;
+      await deleteComment(row.id);
+      await fetchComments(cardId);
+      renderSection(section);
+    });
+
+    actionBtns.appendChild(editBtn);
+    actionBtns.appendChild(delBtn);
+
+    item.appendChild(metaEl);
+    item.appendChild(textEl);
+    item.appendChild(actionBtns);
+    return item;
+  }
+
+  // ---- 섹션 렌더 ----
   async function renderSection(section) {
     const cardId = section.dataset.cardId;
     const open = section.dataset.open === 'true';
@@ -352,26 +464,20 @@
 
     section.innerHTML = '';
 
-    // 토글 버튼
-    const btn = document.createElement('button');
-    btn.className = 'comment-toggle-btn';
-    btn.textContent = open ? `논의 접기 (${roots.length})` : `논의 보기 (${roots.length})`;
-    btn.addEventListener('click', async () => {
-      if (!open) {
-        // 열 때마다 최신 데이터 로드
-        await fetchComments(cardId);
-      }
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'comment-toggle-btn';
+    toggleBtn.textContent = open ? `논의 접기 (${roots.length})` : `논의 보기 (${roots.length})`;
+    toggleBtn.addEventListener('click', async () => {
+      if (!open) await fetchComments(cardId);
       section.dataset.open = open ? 'false' : 'true';
       renderSection(section);
     });
-    section.appendChild(btn);
+    section.appendChild(toggleBtn);
 
     if (!open) return;
 
     const body = document.createElement('div');
     body.className = 'comment-body';
-
-    // 댓글 목록
     const list = document.createElement('div');
     list.className = 'comment-list';
 
@@ -385,21 +491,12 @@
         const myReplies = replies.filter(r => r.parent_id === c.id);
         const rOpen = !!replyOpen[c.id];
 
-        const item = document.createElement('div');
-        item.className = 'comment-item';
-        item.innerHTML = `
-          <div class="comment-meta">
-            <span class="comment-author">${escHtml(c.author)}</span>
-            <span class="comment-date">${fmtDate(c.created_at)}</span>
-          </div>
-          <p class="comment-text">${escHtml(c.content)}</p>`;
+        const item = buildCommentItem(c, section, cardId, false);
 
-        // 대댓글 토글
+        // 답글 토글 버튼
         const replyBtn = document.createElement('button');
         replyBtn.className = 'reply-toggle-btn';
-        replyBtn.textContent = rOpen
-          ? `답글 접기 (${myReplies.length})`
-          : `답글 달기 (${myReplies.length})`;
+        replyBtn.textContent = rOpen ? `답글 접기 (${myReplies.length})` : `답글 달기 (${myReplies.length})`;
         replyBtn.addEventListener('click', () => {
           replyOpen[c.id] = !rOpen;
           renderSection(section);
@@ -411,21 +508,12 @@
           replyList.className = 'reply-list';
 
           myReplies.forEach(r => {
-            const ri = document.createElement('div');
-            ri.className = 'reply-item';
-            ri.innerHTML = `
-              <div class="comment-meta">
-                <span class="comment-author">${escHtml(r.author)}</span>
-                <span class="comment-date">${fmtDate(r.created_at)}</span>
-              </div>
-              <p class="comment-text">${escHtml(r.content)}</p>`;
-            replyList.appendChild(ri);
+            replyList.appendChild(buildCommentItem(r, section, cardId, true));
           });
 
-          // 대댓글 입력폼
           const rfWrap = document.createElement('div');
           rfWrap.className = 'reply-form-wrap';
-          rfWrap.appendChild(buildForm('답글을 입력하세요.', async (author, content) => {
+          rfWrap.appendChild(buildInputForm('답글을 입력하세요.', async (author, content) => {
             await insertComment(cardId, author, content, c.id);
             await fetchComments(cardId);
             renderSection(section);
@@ -439,19 +527,16 @@
     }
 
     body.appendChild(list);
-
-    // 댓글 입력폼
-    body.appendChild(buildForm('의견을 입력하세요.', async (author, content) => {
+    body.appendChild(buildInputForm('의견을 입력하세요.', async (author, content) => {
       await insertComment(cardId, author, content);
       await fetchComments(cardId);
       section.dataset.open = 'true';
       renderSection(section);
     }));
-
     section.appendChild(body);
   }
 
-  function buildForm(placeholder, onSubmit) {
+  function buildInputForm(placeholder, onSubmit) {
     const form = document.createElement('form');
     form.className = 'input-form';
 
