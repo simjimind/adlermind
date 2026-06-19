@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADLER MIND 협동조합 — 지원 기관 안내</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+      background: #f5f6fa;
+      color: #222;
+      padding: 40px 24px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 2px solid #2c3e7a;
+      padding-bottom: 16px;
+      margin-bottom: 32px;
+    }
+    header h1 { font-size: 22px; color: #2c3e7a; letter-spacing: -0.3px; }
+    header p { font-size: 13px; color: #666; margin-top: 6px; }
+    .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+    .btn-nav-link { background: #2c3e7a; color: #fff; border: none; font-size: 12px; padding: 5px 13px; border-radius: 4px; text-decoration: none; white-space: nowrap; display: inline-block; }
+    .btn-nav-link:hover { background: #1a2c60; }
+
+    .section-title {
+      font-size: 13px; font-weight: 700; color: #2c3e7a;
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px;
+    }
+
+    .card {
+      background: #fff; border: 1px solid #dde2f0;
+      border-radius: 8px; padding: 24px 28px; margin-bottom: 20px;
+    }
+    .card-header {
+      display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px;
+    }
+    .badge {
+      background: #2c3e7a; color: #fff; font-size: 12px; font-weight: 700;
+      padding: 4px 10px; border-radius: 4px; white-space: nowrap; margin-top: 3px;
+    }
+    .badge.green { background: #2a7a5a; }
+    .badge.brown { background: #7a5a2a; }
+
+    .card h2 { font-size: 18px; color: #1a2555; line-height: 1.4; }
+    .card .subtitle { font-size: 13px; color: #888; margin-top: 2px; }
+
+    .info-grid {
+      display: grid; grid-template-columns: 100px 1fr;
+      gap: 8px 12px; font-size: 14px; margin-bottom: 16px;
+    }
+    .info-grid .label { color: #888; font-size: 13px; }
+    .info-grid .value { color: #222; }
+    .info-grid a { color: #2c3e7a; text-decoration: none; }
+    .info-grid a:hover { text-decoration: underline; }
+
+    .role-box {
+      background: #f0f3fa; border-left: 3px solid #2c3e7a;
+      border-radius: 0 4px 4px 0; padding: 12px 16px;
+      font-size: 13.5px; line-height: 1.7; color: #333;
+    }
+    .role-box ul { list-style: none; padding: 0; }
+    .role-box ul li::before { content: "· "; color: #2c3e7a; }
+
+    .consultant-card { border-left: 4px solid #2a7a5a; }
+    .consultant-card .role-box { border-left-color: #2a7a5a; }
+    .brown-card { border-left: 4px solid #7a5a2a; }
+    .brown-card .role-box { border-left-color: #7a5a2a; }
+
+    /* ---- 댓글 영역 ---- */
+    .comment-section { margin-top: 20px; border-top: 1px solid #e8ecf5; padding-top: 14px; }
+
+    .comment-toggle-btn {
+      background: none; border: 1px solid #c5cce8; color: #2c3e7a;
+      font-size: 13px; padding: 5px 14px; border-radius: 20px; cursor: pointer;
+      font-family: inherit;
+    }
+    .comment-toggle-btn:hover { background: #eef1fb; }
+
+    .comment-body { margin-top: 14px; }
+
+    .comment-list { margin-bottom: 16px; }
+
+    .comment-item {
+      background: #f7f8fd; border: 1px solid #e4e8f5;
+      border-radius: 6px; padding: 12px 14px; margin-bottom: 10px;
+    }
+    .comment-meta {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+    }
+    .comment-author { font-size: 13px; font-weight: 700; color: #2c3e7a; }
+    .comment-date { font-size: 11px; color: #aaa; }
+    .comment-text { font-size: 13.5px; line-height: 1.65; color: #333; }
+
+    .reply-toggle-btn {
+      background: none; border: none; color: #888; font-size: 12px;
+      cursor: pointer; margin-top: 8px; padding: 0; font-family: inherit;
+    }
+    .reply-toggle-btn:hover { color: #2c3e7a; }
+
+    /* 대댓글 */
+    .reply-list { margin-top: 10px; padding-left: 16px; border-left: 2px solid #dde2f0; }
+    .reply-item {
+      background: #fff; border: 1px solid #e8ecf5;
+      border-radius: 5px; padding: 9px 12px; margin-bottom: 8px;
+    }
+    .reply-item .comment-author { color: #2a7a5a; }
+
+    /* 입력폼 공통 */
+    .input-form { display: flex; flex-direction: column; gap: 8px; }
+    .input-row { display: flex; gap: 8px; }
+    .input-form input[type="text"],
+    .input-form textarea {
+      font-family: inherit; font-size: 13px; border: 1px solid #c5cce8;
+      border-radius: 5px; padding: 8px 10px; color: #222; background: #fff;
+      resize: vertical;
+    }
+    .input-form input[type="text"] { flex: 1; }
+    .input-form textarea { width: 100%; min-height: 60px; }
+    .input-form button[type="submit"] {
+      background: #2c3e7a; color: #fff; border: none; border-radius: 5px;
+      padding: 8px 18px; font-size: 13px; cursor: pointer; font-family: inherit;
+      white-space: nowrap; align-self: flex-end;
+    }
+    .input-form button[type="submit"]:hover { background: #1a2c60; }
+
+    .reply-form-wrap { margin-top: 10px; padding-left: 16px; }
+
+    /* 빈 상태 */
+    .no-comment { font-size: 13px; color: #bbb; margin-bottom: 12px; }
+
+    .note-box {
+      background: #fff8e6; border: 1px solid #e8d070;
+      border-radius: 6px; padding: 14px 18px; font-size: 13px;
+      color: #5a4500; line-height: 1.7; margin-top: 32px;
+    }
+    .note-box strong { display: block; margin-bottom: 6px; font-size: 13.5px; }
+
+    footer {
+      margin-top: 40px; font-size: 12px; color: #aaa;
+      border-top: 1px solid #dde; padding-top: 16px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <h1>ADLER MIND 협동조합 — 설립 지원 기관 안내</h1>
+    <a href="adlermind_charter_review.html" class="btn-nav-link">&larr; 서류 검토</a>
+  </div>
+  <p>작성일: 2026. 6. 19. &nbsp;|&nbsp; 용도: 설립 준비 참고용 (공개용 아님)</p>
+</header>
+
+<p class="section-title">공공 지원 기관</p>
+
+<!-- 광주사회적경제지원센터 -->
+<div class="card" id="card-gjsec">
+  <div class="card-header">
+    <span class="badge">상담·코칭</span>
+    <div>
+      <h2>광주사회적경제지원센터</h2>
+      <p class="subtitle">협동조합 설립 전담 상담 및 실무 교육</p>
+    </div>
+  </div>
+  <div class="info-grid">
+    <span class="label">전화</span>
+    <span class="value">070-7707-0088 (교육정책팀 협동조합 담당)</span>
+    <span class="label">주소</span>
+    <span class="value">경기도 광주시 역동 1-96</span>
+    <span class="label">웹사이트</span>
+    <span class="value"><a href="https://www.gjsec.kr" target="_blank">www.gjsec.kr</a></span>
+  </div>
+  <div class="role-box">
+    <ul>
+      <li>협동조합 설립 요건 분석 및 정관 초안 작성 지원</li>
+      <li>사업계획서·창립총회 준비 실무 코칭</li>
+      <li>사회적경제 교육 및 컨설팅 (무료)</li>
+      <li>경기도 광주 관내 협동조합 설립 1차 상담 창구</li>
+    </ul>
+  </div>
+  <div class="comment-section" data-card-id="gjsec"></div>
+</div>
+
+<!-- 광주시청 -->
+<div class="card" id="card-gwangjucity">
+  <div class="card-header">
+    <span class="badge">신고 접수</span>
+    <div>
+      <h2>광주시청 일자리경제과 사회적경제팀</h2>
+      <p class="subtitle">협동조합 설립 신고 서류 접수 및 행정 처리</p>
+    </div>
+  </div>
+  <div class="info-grid">
+    <span class="label">대표전화</span>
+    <span class="value">031-760-2000 (콜센터 연결 후 사회적경제팀 요청)</span>
+    <span class="label">주소</span>
+    <span class="value">경기도 광주시 행정타운로 50 (송정동)</span>
+  </div>
+  <div class="role-box">
+    <ul>
+      <li>일반협동조합 설립 신고서 최종 접수</li>
+      <li>설립 인가·신고 완료 후 사업자등록증 연계 안내</li>
+      <li>협동조합기본법 시행령에 따른 행정 처리</li>
+    </ul>
+  </div>
+  <div class="comment-section" data-card-id="gwangjucity"></div>
+</div>
+
+<p class="section-title" style="margin-top:32px;">전문 컨설턴트</p>
+
+<!-- 김진숙 -->
+<div class="card consultant-card" id="card-kimjinsook">
+  <div class="card-header">
+    <span class="badge green">민간 전문가</span>
+    <div>
+      <h2>김진숙</h2>
+      <p class="subtitle">Social Creator &amp; Designer · 사회적경제 전문 강사</p>
+    </div>
+  </div>
+  <div class="info-grid">
+    <span class="label">연락처</span>
+    <span class="value">010-9887-6952 &nbsp;|&nbsp; alwaysdo.jin@gmail.com</span>
+    <span class="label">학력</span>
+    <span class="value">성공회대학교 시민사회복지대학원 사회적기업 전공</span>
+  </div>
+  <div class="role-box">
+    <ul>
+      <li>사회적협동조합 스마트에이징 감사 역임</li>
+      <li>한국대리운전 협동조합 감사 역임</li>
+      <li>사회적기업 사단법인 아리수 이사</li>
+      <li>사회적기업 주식회사 캐어유 전문위원</li>
+      <li>소상공인협동조합 전문강사 (소상공인시장진흥공단)</li>
+      <li>협동조합 코디네이터 (사회적기업진흥원)</li>
+      <li>사회적기업 전문강사 (사회적기업진흥원)</li>
+      <li>전) 경기도 북부협동조합지원기관 전문위원</li>
+      <li>전) 과천시 사회적경제지원센터</li>
+      <li>전) 경기도따복공동체지원센터</li>
+    </ul>
+  </div>
+  <div class="comment-section" data-card-id="kimjinsook"></div>
+</div>
+
+<!-- 위드케리어 -->
+<div class="card brown-card" id="card-withcareer">
+  <div class="card-header">
+    <span class="badge brown">발기인 추천</span>
+    <div>
+      <h2>사단법인 위드케리어</h2>
+      <p class="subtitle">직업교육훈련 · 취업 지원 전문 기관 (경기도 광주)</p>
+    </div>
+  </div>
+  <div class="info-grid">
+    <span class="label">웹사이트</span>
+    <span class="value"><a href="http://withcareer.kr" target="_blank">withcareer.kr</a></span>
+  </div>
+  <div class="role-box" style="border-left-color:#7a5a2a;">
+    <ul>
+      <li>지역 노동시장 및 구직자 요구 분석을 통한 직업교육훈련 프로그램 개발</li>
+      <li>구직자 직업능력 개발 및 인재 육성</li>
+      <li>지역 구인기업 발굴 · 직업정보 제공 · 취업 알선</li>
+      <li>발기인(박정연) 추천 협력 기관</li>
+    </ul>
+  </div>
+  <div class="comment-section" data-card-id="withcareer"></div>
+</div>
+
+<div class="note-box">
+  <strong>— 설립 진행 순서 참고</strong>
+  광주사회적경제지원센터 상담 → 정관·사업계획서 작성 → 창립총회 개최 → 광주시청 설립신고 접수 → 기획재정부 신고증 발급 → 세무서 사업자등록 신청.
+  각 단계에서 필요한 서류 목록은 협동조합기본법 시행령 제7조 이하를 기준으로 확인한다. 최종 서류는 행정사 또는 공인회계사 검토를 거친 후 제출을 권장한다.
+</div>
+
+<footer>
+  ADLER MIND 협동조합 내부 자료 · 마루 작성 · 2026. 6. 19.
+</footer>
+
+<script>
+  // ---- 데이터 저장 키 ----
+  const STORAGE_KEY = 'adlermind_cooperation_comments';
+
+  function loadData() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
+    catch { return {}; }
+  }
+  function saveData(data) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  }
+
+  function nowStr() {
+    const d = new Date();
+    return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+  }
+
+  // ---- 댓글 섹션 렌더 ----
+  function renderCommentSection(section) {
+    const cardId = section.dataset.cardId;
+    const data = loadData();
+    const comments = data[cardId] || [];
+    const open = section.dataset.open === 'true';
+
+    section.innerHTML = '';
+
+    // 토글 버튼
+    const toggleBtn = document.createElement('button');
+    toggleBtn.className = 'comment-toggle-btn';
+    toggleBtn.textContent = open
+      ? `논의 접기 (${comments.length})`
+      : `논의 보기 (${comments.length})`;
+    toggleBtn.addEventListener('click', () => {
+      section.dataset.open = open ? 'false' : 'true';
+      renderCommentSection(section);
+    });
+    section.appendChild(toggleBtn);
+
+    if (!open) return;
+
+    const body = document.createElement('div');
+    body.className = 'comment-body';
+
+    // 댓글 목록
+    const list = document.createElement('div');
+    list.className = 'comment-list';
+
+    if (comments.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'no-comment';
+      empty.textContent = '아직 등록된 의견이 없습니다.';
+      list.appendChild(empty);
+    } else {
+      comments.forEach((c, ci) => {
+        const item = document.createElement('div');
+        item.className = 'comment-item';
+
+        const meta = document.createElement('div');
+        meta.className = 'comment-meta';
+        meta.innerHTML = `<span class="comment-author">${escHtml(c.author)}</span><span class="comment-date">${c.date}</span>`;
+
+        const text = document.createElement('p');
+        text.className = 'comment-text';
+        text.textContent = c.text;
+
+        // 대댓글 토글
+        const replies = c.replies || [];
+        const replyOpen = c._replyOpen || false;
+
+        const replyToggle = document.createElement('button');
+        replyToggle.className = 'reply-toggle-btn';
+        replyToggle.textContent = replyOpen
+          ? `답글 접기 (${replies.length})`
+          : `답글 달기 (${replies.length})`;
+        replyToggle.addEventListener('click', () => {
+          const d = loadData();
+          d[cardId][ci]._replyOpen = !replyOpen;
+          saveData(d);
+          renderCommentSection(section);
+        });
+
+        item.appendChild(meta);
+        item.appendChild(text);
+        item.appendChild(replyToggle);
+
+        if (replyOpen) {
+          // 대댓글 목록
+          const replyList = document.createElement('div');
+          replyList.className = 'reply-list';
+          replies.forEach(r => {
+            const ri = document.createElement('div');
+            ri.className = 'reply-item';
+            ri.innerHTML = `<div class="comment-meta"><span class="comment-author">${escHtml(r.author)}</span><span class="comment-date">${r.date}</span></div><p class="comment-text">${escHtml(r.text)}</p>`;
+            replyList.appendChild(ri);
+          });
+
+          // 대댓글 입력폼
+          const replyFormWrap = document.createElement('div');
+          replyFormWrap.className = 'reply-form-wrap';
+          replyFormWrap.appendChild(buildReplyForm(cardId, ci, section));
+          replyList.appendChild(replyFormWrap);
+          item.appendChild(replyList);
+        }
+
+        list.appendChild(item);
+      });
+    }
+
+    body.appendChild(list);
+
+    // 댓글 입력폼
+    body.appendChild(buildCommentForm(cardId, section));
+    section.appendChild(body);
+  }
+
+  function buildCommentForm(cardId, section) {
+    const form = document.createElement('form');
+    form.className = 'input-form';
+
+    const row = document.createElement('div');
+    row.className = 'input-row';
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = '이름';
+    nameInput.style.maxWidth = '120px';
+
+    const ta = document.createElement('textarea');
+    ta.placeholder = '의견을 입력하세요.';
+
+    const btn = document.createElement('button');
+    btn.type = 'submit';
+    btn.textContent = '등록';
+
+    form.appendChild(nameInput);
+    form.appendChild(ta);
+
+    const submitRow = document.createElement('div');
+    submitRow.style.display = 'flex';
+    submitRow.style.justifyContent = 'flex-end';
+    submitRow.appendChild(btn);
+    form.appendChild(submitRow);
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const author = nameInput.value.trim() || '익명';
+      const text = ta.value.trim();
+      if (!text) return;
+      const d = loadData();
+      if (!d[cardId]) d[cardId] = [];
+      d[cardId].push({ author, text, date: nowStr(), replies: [], _replyOpen: false });
+      saveData(d);
+      section.dataset.open = 'true';
+      renderCommentSection(section);
+    });
+
+    return form;
+  }
+
+  function buildReplyForm(cardId, commentIdx, section) {
+    const form = document.createElement('form');
+    form.className = 'input-form';
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'text';
+    nameInput.placeholder = '이름';
+    nameInput.style.maxWidth = '120px';
+
+    const ta = document.createElement('textarea');
+    ta.placeholder = '답글을 입력하세요.';
+    ta.style.minHeight = '48px';
+
+    const submitRow = document.createElement('div');
+    submitRow.style.display = 'flex';
+    submitRow.style.justifyContent = 'flex-end';
+
+    const btn = document.createElement('button');
+    btn.type = 'submit';
+    btn.textContent = '답글 등록';
+
+    submitRow.appendChild(btn);
+    form.appendChild(nameInput);
+    form.appendChild(ta);
+    form.appendChild(submitRow);
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const author = nameInput.value.trim() || '익명';
+      const text = ta.value.trim();
+      if (!text) return;
+      const d = loadData();
+      if (!d[cardId][commentIdx].replies) d[cardId][commentIdx].replies = [];
+      d[cardId][commentIdx].replies.push({ author, text, date: nowStr() });
+      saveData(d);
+      renderCommentSection(section);
+    });
+
+    return form;
+  }
+
+  function escHtml(str) {
+    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ---- 초기화 ----
+  document.querySelectorAll('.comment-section').forEach(section => {
+    section.dataset.open = 'false';
+    renderCommentSection(section);
+  });
+</script>
+</body>
+</html>
