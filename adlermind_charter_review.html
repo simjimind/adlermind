@@ -205,6 +205,50 @@ body {
 .comment-author { font-weight: bold; color: var(--text); font-size: 14px; }
 .comment-text { font-size: 14px; line-height: 1.7; white-space: pre-wrap; }
 .no-comment { color: var(--muted); font-size: 13px; text-align: center; padding: 16px 0; }
+.comment-actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+.btn-sm {
+  padding: 3px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: white;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--muted);
+  transition: all 0.15s;
+}
+.btn-sm:hover { background: var(--green-pale); color: var(--green); border-color: var(--green-light); }
+.btn-danger:hover { background: #fee2e2 !important; color: #b91c1c !important; border-color: #fca5a5 !important; }
+.edit-area {
+  width: 100%;
+  min-height: 70px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+  background: white;
+  margin-top: 6px;
+  display: block;
+}
+.edit-area:focus { outline: none; border-color: var(--green-light); }
+.edit-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.reply-form {
+  margin-top: 10px;
+  padding: 12px;
+  background: var(--green-pale);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+.reply-list { margin-top: 10px; padding-left: 16px; border-left: 3px solid var(--border); }
+.reply-item {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  margin-bottom: 6px;
+  background: white;
+}
 </style>
 </head>
 <body>
@@ -290,83 +334,211 @@ const MEMBERS = [
 
 let approvals = {};
 let currentMember = '';
+let allComments = [];
+
+function esc(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fmt(dt) {
+  if (!dt) return '';
+  return new Date(dt).toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+}
 
 function onMemberChange() {
   currentMember = document.getElementById('memberSelect').value;
+  const own = allComments.find(c => c.member_name === currentMember && !c.parent_id);
+  document.getElementById('commentText').value = own ? own.content : '';
+  renderComments();
 }
 
 async function sbGet(path) {
-  const res = await fetch(SB_URL + '/rest/v1/' + path, {
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+  const res = await fetch(SB_URL+'/rest/v1/'+path, {
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
   });
   try { return await res.json(); } catch { return []; }
 }
 
 async function sbPost(path, body, prefer) {
-  return fetch(SB_URL + '/rest/v1/' + path, {
-    method: 'POST',
-    headers: {
-      'apikey': SB_KEY,
-      'Authorization': 'Bearer ' + SB_KEY,
-      'Content-Type': 'application/json',
-      'Prefer': prefer || 'return=minimal'
-    },
-    body: JSON.stringify(body)
+  return fetch(SB_URL+'/rest/v1/'+path, {
+    method:'POST',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':prefer||'return=minimal'},
+    body:JSON.stringify(body)
+  });
+}
+
+async function sbPatch(path, body) {
+  return fetch(SB_URL+'/rest/v1/'+path, {
+    method:'PATCH',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+    body:JSON.stringify(body)
+  });
+}
+
+async function sbDelete(path) {
+  return fetch(SB_URL+'/rest/v1/'+path, {
+    method:'DELETE',
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
   });
 }
 
 async function loadApprovals() {
   const data = await sbGet('charter_approvals?select=member_name,status');
   approvals = {};
-  if (Array.isArray(data)) data.forEach(r => { approvals[r.member_name] = r.status; });
+  if (Array.isArray(data)) data.forEach(r=>{ approvals[r.member_name]=r.status; });
   renderApprovals();
 }
 
 function renderApprovals() {
-  document.getElementById('approvalGrid').innerHTML = MEMBERS.map(m => {
+  document.getElementById('approvalGrid').innerHTML = MEMBERS.map(m=>{
     const s = approvals[m.name];
-    const cls = s === '동의' ? 'b-ok' : s === '보류' ? 'b-hold' : 'b-none';
-    const label = s || '미응답';
+    const cls = s==='동의'?'b-ok':s==='보류'?'b-hold':'b-none';
     return `<div class="approval-card">
       <div class="name">${m.name}</div>
       <div class="role">${m.role}</div>
-      <span class="badge ${cls}">${label}</span>
+      <span class="badge ${cls}">${s||'미응답'}</span>
     </div>`;
   }).join('');
 }
 
 async function loadComments() {
-  const data = await sbGet('charter_comments?article_ref=eq.' + encodeURIComponent(AREF) + '&order=created_at.desc&select=member_name,content,created_at');
+  const data = await sbGet('charter_comments?article_ref=eq.'+encodeURIComponent(AREF)+'&order=created_at.asc&select=id,member_name,content,created_at,parent_id,comment_type');
+  allComments = Array.isArray(data) ? data : [];
+  renderComments();
+}
+
+function renderComments() {
   const el = document.getElementById('commentsList');
-  if (!Array.isArray(data) || data.length === 0) {
-    el.innerHTML = '<div class="no-comment">아직 의견이 없습니다.</div>';
-    return;
-  }
-  el.innerHTML = data.map(c => {
-    const dt = c.created_at ? new Date(c.created_at).toLocaleString('ko-KR', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' }) : '';
-    const txt = (c.content || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-    return `<div class="comment-item">
-      <div class="comment-meta"><span class="comment-author">${c.member_name}</span><span>${dt}</span></div>
-      <div class="comment-text">${txt}</div>
-    </div>`;
+  const top = allComments.filter(c=>!c.parent_id);
+  if (!top.length) { el.innerHTML='<div class="no-comment">아직 의견이 없습니다.</div>'; return; }
+  el.innerHTML = top.map(c=>{
+    const replies = allComments.filter(r=>r.parent_id===c.id);
+    return buildCommentHTML(c, replies);
   }).join('');
+}
+
+function buildCommentHTML(c, replies) {
+  const isOwn = currentMember && c.member_name===currentMember;
+  const replyItems = replies.map(r=>buildReplyHTML(r)).join('');
+  const actions = [
+    currentMember ? `<button class="btn-sm" onclick="toggleReplyForm('${c.id}')">답글</button>` : '',
+    isOwn ? `<button class="btn-sm" onclick="startEdit('${c.id}')">수정</button>` : '',
+    isOwn ? `<button class="btn-sm btn-danger" onclick="delComment('${c.id}')">삭제</button>` : '',
+  ].filter(Boolean).join('');
+  return `<div class="comment-item" id="ci-${c.id}">
+    <div class="comment-meta"><span class="comment-author">${esc(c.member_name)}</span><span>${fmt(c.created_at)}</span></div>
+    <div id="ct-${c.id}"><div class="comment-text">${esc(c.content||'')}</div></div>
+    ${actions ? `<div class="comment-actions" id="ca-${c.id}">${actions}</div>` : ''}
+    <div class="reply-form" id="rf-${c.id}" style="display:none">
+      <textarea class="edit-area" id="rta-${c.id}" placeholder="답글을 입력하세요..."></textarea>
+      <div class="edit-actions">
+        <button class="btn btn-primary" style="font-size:13px;padding:5px 16px;" onclick="submitReply('${c.id}')">답글 저장</button>
+        <button class="btn-sm" onclick="toggleReplyForm('${c.id}')">취소</button>
+      </div>
+    </div>
+    ${replies.length ? `<div class="reply-list">${replyItems}</div>` : ''}
+  </div>`;
+}
+
+function buildReplyHTML(r) {
+  const isOwn = currentMember && r.member_name===currentMember;
+  const actions = [
+    isOwn ? `<button class="btn-sm" onclick="startEdit('${r.id}')">수정</button>` : '',
+    isOwn ? `<button class="btn-sm btn-danger" onclick="delComment('${r.id}')">삭제</button>` : '',
+  ].filter(Boolean).join('');
+  return `<div class="reply-item" id="ci-${r.id}">
+    <div class="comment-meta"><span class="comment-author">${esc(r.member_name)}</span><span>${fmt(r.created_at)}</span></div>
+    <div id="ct-${r.id}"><div class="comment-text">${esc(r.content||'')}</div></div>
+    ${actions ? `<div class="comment-actions" id="ca-${r.id}">${actions}</div>` : ''}
+  </div>`;
+}
+
+function toggleReplyForm(pid) {
+  const rf = document.getElementById('rf-'+pid);
+  const visible = rf.style.display !== 'none';
+  rf.style.display = visible ? 'none' : 'block';
+  if (!visible) document.getElementById('rta-'+pid).focus();
+}
+
+function startEdit(id) {
+  const item = allComments.find(c=>c.id===id);
+  if (!item) return;
+  const ct = document.getElementById('ct-'+id);
+  const ca = document.getElementById('ca-'+id);
+  ct.innerHTML = `<textarea class="edit-area" id="eta-${id}">${esc(item.content||'')}</textarea>
+    <div class="edit-actions">
+      <button class="btn btn-primary" style="font-size:13px;padding:5px 16px;" onclick="saveEdit('${id}')">저장</button>
+      <button class="btn-sm" onclick="renderComments()">취소</button>
+    </div>`;
+  if (ca) ca.style.display = 'none';
+  const ta = document.getElementById('eta-'+id);
+  if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+}
+
+async function saveEdit(id) {
+  const area = document.getElementById('eta-'+id);
+  if (!area) return;
+  const text = area.value.trim();
+  if (!text) { msg('내용을 입력해 주세요.'); return; }
+  const res = await sbPatch(
+    'charter_comments?id=eq.'+id+'&member_name=eq.'+encodeURIComponent(currentMember),
+    {content: text}
+  );
+  if (res.ok || res.status===204) {
+    await loadComments();
+    msg('수정되었습니다.');
+  } else {
+    msg('수정 중 오류가 발생했습니다.');
+  }
+}
+
+async function delComment(id) {
+  if (!confirm('삭제하시겠습니까? 이 의견에 달린 답글도 함께 삭제됩니다.')) return;
+  const res = await sbDelete('charter_comments?id=eq.'+id+'&member_name=eq.'+encodeURIComponent(currentMember));
+  if (res.ok || res.status===204) {
+    await loadComments();
+    msg('삭제되었습니다.');
+  } else {
+    msg('삭제 중 오류가 발생했습니다.');
+  }
+}
+
+async function submitReply(parentId) {
+  if (!currentMember) { msg('상단에서 이름을 먼저 선택해 주세요.'); return; }
+  const area = document.getElementById('rta-'+parentId);
+  const text = area ? area.value.trim() : '';
+  if (!text) { msg('답글 내용을 입력해 주세요.'); return; }
+  const res = await sbPost('charter_comments',
+    {member_name:currentMember, article_ref:AREF, content:text, parent_id:parentId, comment_type:'답글'},
+    'return=minimal'
+  );
+  if (res.ok || res.status===201) {
+    await loadComments();
+    msg('답글이 저장되었습니다.');
+  } else {
+    msg('저장 중 오류가 발생했습니다.');
+  }
 }
 
 async function submitComment() {
   if (!currentMember) { msg('상단에서 이름을 먼저 선택해 주세요.'); return; }
   const text = document.getElementById('commentText').value.trim();
   if (!text) { msg('의견 내용을 입력해 주세요.'); return; }
-  const res = await sbPost(
-    'charter_comments?on_conflict=member_name,article_ref',
-    { member_name: currentMember, article_ref: AREF, content: text },
-    'resolution=merge-duplicates,return=minimal'
-  );
-  if (res.ok || res.status === 201) {
+  const existing = allComments.find(c => c.member_name===currentMember && !c.parent_id);
+  let res;
+  if (existing) {
+    res = await sbPatch(
+      'charter_comments?id=eq.'+existing.id+'&member_name=eq.'+encodeURIComponent(currentMember),
+      {content: text}
+    );
+  } else {
+    res = await sbPost('charter_comments',
+      {member_name:currentMember, article_ref:AREF, content:text, comment_type:'의견'},
+      'return=minimal'
+    );
+  }
+  if (res.ok || res.status===204 || res.status===201) {
     msg('의견이 저장되었습니다.');
-    document.getElementById('commentText').value = '';
     await loadComments();
   } else {
-    msg('저장 중 오류가 발생했습니다. 다시 시도해 주세요.');
+    msg('저장 중 오류가 발생했습니다.');
   }
 }
 
@@ -374,11 +546,11 @@ async function submitApproval(status) {
   if (!currentMember) { msg('상단에서 이름을 먼저 선택해 주세요.'); return; }
   const res = await sbPost(
     'charter_approvals?on_conflict=member_name',
-    { member_name: currentMember, status: status },
+    {member_name:currentMember, status:status},
     'resolution=merge-duplicates,return=minimal'
   );
-  if (res.ok || res.status === 201) {
-    msg(status + ' 의사가 저장되었습니다.');
+  if (res.ok || res.status===201) {
+    msg(status+' 의사가 저장되었습니다.');
     await loadApprovals();
   } else {
     msg('저장 중 오류가 발생했습니다.');
@@ -388,11 +560,12 @@ async function submitApproval(status) {
 function msg(text) {
   const el = document.getElementById('formMsg');
   el.textContent = text;
-  setTimeout(() => { el.textContent = ''; }, 4000);
+  setTimeout(()=>{el.textContent='';}, 4000);
 }
 
 loadApprovals();
 loadComments();
+setInterval(()=>{ loadComments(); loadApprovals(); }, 30000);
 </script>
 </body>
 </html>
